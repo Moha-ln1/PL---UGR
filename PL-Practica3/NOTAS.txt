@@ -1,0 +1,8 @@
+bison -v -d parser.y
+flex analizador_lexico.lex 
+gcc lex.yy.c -lfl -o analizador_lexico
+gcc lex.yy.c parser.tab.c -o analizador -lfl
+
+ejecucion 
+
+./analizador < testfile

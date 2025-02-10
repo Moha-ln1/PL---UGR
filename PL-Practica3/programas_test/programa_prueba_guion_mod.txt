@@ -1,0 +1,85 @@
+program programa_guion{
+    int ve;
+    float vf;
+    char vc;
+    bool vl;
+    list <int> pe pe2, pe3
+    list <float> pf pf2;
+    list <char> pc, pc2;
+    list <bool> pl; 
+
+
+    int funcionA (int a1, float a2, char a3){
+       float xf, x2; 
+
+       float funcionC(bool c1, int c2){
+            float x1;
+            
+            ·
+            x1 = 1.3f;
+            if (c2 > 10){
+                c2 = c2 - 1;
+            }else{
+                x1 = 3.1;
+            }
+            return x1;
+       }
+
+        xf = funcionC (true, 10);
+        x = funcionC(false,1) - funcionC(true,23);
+        x2 = xf * (funcionC(false,1) - funcionC(true,23))/10.0;
+
+        printf("El valor de x2 es", x2);
+
+        while( x2 * funcionC(false,1) - xf < 10.0){
+            x2 = x2 * xf;
+        }
+
+        float funcionD (float d1){
+            char dato;
+            int valor;
+
+            char funcionE (char e1, char e2){
+               scanf("Introduzca dos caracteres", e1, e2); 
+               
+               if (e1 == 'a'){
+                    return e1;
+               }else if (e1 == 'b'){
+                    return e2;
+               }else if (e1 == 'a' && e2 != 'b'){
+                    return e1;
+               }else{
+                    return ' ';
+               }
+            }
+
+            scanf("Introduzca un valor entero", valor);
+            if(d1 > 0.0){
+                int dato;
+                dato = 2;
+                dato = valor*20/dato;
+            }else{
+                valor = valor*100;
+                d1 = d1/1000.0;
+            }
+            return d1;
+        }
+    }
+
+    list<float> l;
+
+    l>>;
+    l<<;
+    $l;
+    l@x;
+    l@x++z;
+    l = l--2;
+    l = l%x;
+    l = l*l2;
+    l = l+x;
+    l = x+l;
+    l = l-x;
+    l = l*x;
+    l = x*l;
+    l = l/x;
+}

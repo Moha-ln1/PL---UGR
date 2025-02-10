@@ -1,0 +1,3323 @@
+Terminales no usados en la gramática
+
+    PUNTO
+    COMENT
+
+
+Gramática
+
+    0 $accept: Programa $end
+
+    1 Programa: PROGRAM ID bloque
+    2         | error bloque
+
+    3 bloque: LLAVE_IZQ Declaracion Sentencias LLAVE_DER
+    4       | LLAVE_IZQ Sentencias Declaracion LLAVE_DER
+    5       | LLAVE_IZQ Declaracion Sentencias Declaracion LLAVE_DER
+    6       | LLAVE_IZQ Declaracion LLAVE_DER
+    7       | LLAVE_IZQ Sentencias LLAVE_DER
+    8       | LLAVE_IZQ LLAVE_DER
+
+    9 Declaracion: declarar_variable
+   10            | declarar_funcion
+   11            | Declaracion declarar_variable
+   12            | Declaracion declarar_funcion
+
+   13 declarar_variable: tipo_dato lista_ID PYC
+   14                  | tipo_dato sentencia_asignacion
+   15                  | tipo_dato lista_ID error
+   16                  | error lista_ID PYC
+
+   17 declarar_funcion: tipo_dato ID PAR_IZQ Parametros PAR_DER bloque
+   18                 | tipo_dato ID PAR_IZQ PAR_DER bloque
+
+   19 lista_ID: ID
+   20         | lista_ID COMA ID
+   21         | lista_ID ID error
+
+   22 Parametros: tipo_dato ID
+   23           | tipo_dato ID OP_ASIGNACION expresion
+   24           | Parametros COMA tipo_dato ID
+   25           | Parametros COMA tipo_dato ID OP_ASIGNACION expresion
+   26           | ID error
+   27           | Parametros tipo_dato error
+   28           | tipo_dato error
+
+   29 Sentencias: Sentencias Sentencia
+   30           | Sentencia
+
+   31 Sentencia: sentencia_asignacion
+   32          | sentencia_if
+   33          | sentencia_while
+   34          | sentencia_entrada
+   35          | sentencia_salida
+   36          | sentencia_return
+   37          | sentencia_repeat_until
+   38          | sentencia_mover_lista
+   39          | sentencia_comenzar_lista
+   40          | sentencia_lista_aniadir_en
+   41          | error PYC
+
+   42 llamada_subprog: ID PAR_IZQ lista_expresiones_o_cadena PAR_DER
+   43                | ID PAR_IZQ PAR_DER
+   44                | ID PAR_IZQ lista_expresiones_o_cadena error
+
+   45 sentencia_asignacion: ID OP_ASIGNACION expresion PYC
+   46                     | ID OP_ASIGNACION COR_IZQ lista_expresiones_o_cadena COR_DER PYC
+   47                     | ID OP_ASIGNACION error
+
+   48 sentencia_if: IF PAR_IZQ expresion PAR_DER bloque sentencia_else_if
+   49             | IF PAR_IZQ expresion bloque
+
+   50 sentencia_else_if: ELSE IF PAR_IZQ expresion PAR_DER bloque sentencia_else_if
+   51                  | sentencia_else
+   52                  | ELSE IF PAR_IZQ expresion bloque
+
+   53 sentencia_else: ELSE bloque
+   54               | ε
+
+   55 sentencia_while: WHILE PAR_IZQ lista_expresiones_o_cadena PAR_DER bloque
+   56                | WHILE PAR_IZQ lista_expresiones_o_cadena bloque
+
+   57 sentencia_entrada: INPUT PAR_IZQ lista_expresiones_o_cadena PAR_DER PYC
+   58                  | INPUT PAR_IZQ COMILLAS lista_expresiones_o_cadena COMILLAS COMA lista_ID PAR_DER PYC
+   59                  | INPUT PAR_IZQ lista_expresiones_o_cadena PAR_DER
+   60                  | INPUT PAR_IZQ COMILLAS lista_expresiones_o_cadena COMILLAS COMA lista_ID PAR_DER error
+   61                  | INPUT PAR_IZQ COMILLAS lista_expresiones_o_cadena COMILLAS lista_ID PAR_DER PYC
+   62                  | INPUT PAR_IZQ COMILLAS lista_expresiones_o_cadena PAR_DER
+
+   63 sentencia_salida: OUTPUT PAR_IZQ lista_expresiones_o_cadena PAR_DER PYC
+   64                 | OUTPUT PAR_IZQ COMILLAS lista_expresiones_o_cadena COMILLAS PAR_DER PYC
+   65                 | OUTPUT PAR_IZQ COMILLAS lista_expresiones_o_cadena COMILLAS COMA lista_ID PAR_DER PYC
+   66                 | OUTPUT PAR_IZQ lista_expresiones_o_cadena PAR_DER error
+   67                 | OUTPUT PAR_IZQ COMILLAS lista_expresiones_o_cadena COMILLAS PAR_DER error
+   68                 | OUTPUT PAR_IZQ COMILLAS lista_expresiones_o_cadena PAR_DER
+   69                 | OUTPUT PAR_IZQ COMILLAS lista_expresiones_o_cadena COMILLAS COMA lista_ID PAR_DER error
+   70                 | OUTPUT PAR_IZQ COMILLAS lista_expresiones_o_cadena COMILLAS lista_ID PAR_DER PYC
+
+   71 sentencia_return: RETURN expresion PYC
+   72                 | RETURN PYC
+
+   73 sentencia_repeat_until: REPEAT bloque UNTIL PAR_IZQ expresion PAR_DER PYC
+   74                       | REPEAT bloque UNTIL PAR_IZQ expresion PAR_DER error
+
+   75 sentencia_mover_lista: ID OP_LISTA PYC
+   76                      | ID OP_LISTA ID PYC
+
+   77 sentencia_comenzar_lista: OP_INIT_LISTA ID PYC
+   78                         | ID OP_INIT_LISTA expresion PYC
+
+   79 sentencia_lista_aniadir_en: ID OP_ACCESO expresion PYC
+   80                           | ID OP_ACCESO expresion OP_INCREMENT expresion PYC
+   81                           | ID OP_ACCESO expresion error
+
+   82 lista_expresiones_o_cadena: expresion
+   83                           | lista_expresiones_o_cadena COMA expresion
+
+   84 expresion: expresion_binaria
+   85          | expresion_unaria
+   86          | llamada_subprog
+   87          | constante
+   88          | ID
+   89          | PAR_IZQ expresion PAR_DER
+   90          | PAR_IZQ expresion error
+
+   91 expresion_binaria: expresion OP_SUM_RES expresion
+   92                  | expresion OP_MULT expresion
+   93                  | expresion MAYOR_QUE expresion
+   94                  | expresion MENOR_QUE expresion
+   95                  | expresion OP_LOGIC expresion
+   96                  | expresion OP_AND expresion
+   97                  | expresion OP_COMP expresion
+   98                  | expresion OP_ARIT expresion
+   99                  | expresion OP_DECREMENT expresion
+
+  100 expresion_unaria: OP_INCREMENT expresion
+  101                 | OP_DECREMENT expresion
+  102                 | OP_R expresion
+  103                 | OP_SUM_RES expresion
+  104                 | OP_MULT expresion
+  105                 | expresion OP_INCREMENT
+  106                 | expresion OP_DECREMENT
+
+  107 tipo_dato: TIPO_DATO
+  108          | LISTA MENOR_QUE tipo_dato MAYOR_QUE
+
+  109 constante: NUMERO
+  110          | NUMERO END_FLOAT
+  111          | CADENA
+  112          | BOOL_VALUE
+  113          | LETRA
+
+
+Terminales con las reglas donde aparecen
+
+    $end (0) 0
+    error (256) 2 15 16 21 26 27 28 41 44 47 60 66 67 69 74 81 90
+    INPUT (258) 57 58 59 60 61 62
+    OUTPUT (259) 63 64 65 66 67 68 69 70
+    PROGRAM (260) 1
+    ID (261) 1 17 18 19 20 21 22 23 24 25 26 42 43 44 45 46 47 75 76 77 78 79 80 81 88
+    CADENA (262) 111
+    IF (263) 48 49 50 52
+    RETURN (264) 71 72
+    WHILE (265) 55 56
+    REPEAT (266) 73 74
+    UNTIL (267) 73 74
+    OP_ASIGNACION (268) 23 25 45 46 47
+    PYC (269) 13 16 41 45 46 57 58 61 63 64 65 70 71 72 73 75 76 77 78 79 80
+    COMA (270) 20 24 25 58 60 65 69 83
+    PUNTO (271)
+    COMILLAS (272) 58 60 61 62 64 65 67 68 69 70
+    BOOL_VALUE (273) 112
+    LETRA (274) 113
+    NUMERO (275) 109 110
+    COMENT (276)
+    END_FLOAT (277) 110
+    ELSE (278) 50 52 53
+    TIPO_DATO (279) 107
+    LISTA (280) 108
+    PAR_IZQ (281) 17 18 42 43 44 48 49 50 52 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 73 74 89 90
+    LLAVE_IZQ (282) 3 4 5 6 7 8
+    COR_IZQ (283) 46
+    MENOR_QUE (284) 94 108
+    PAR_DER (285) 17 18 42 43 48 50 55 57 58 59 60 61 62 63 64 65 66 67 68 69 70 73 74 89
+    LLAVE_DER (286) 3 4 5 6 7 8
+    COR_DER (287) 46
+    MAYOR_QUE (288) 93 108
+    OP_SUM_RES (289) 91 103
+    OP_MULT (290) 92 104
+    OP_ARIT (291) 98
+    OP_COMP (292) 97
+    OP_LOGIC (293) 95
+    OP_AND (294) 96
+    OP_R (295) 102
+    OP_INIT_LISTA (296) 77 78
+    OP_INCREMENT (297) 80 100 105
+    OP_DECREMENT (298) 99 101 106
+    OP_LISTA (299) 75 76
+    OP_ACCESO (300) 79 80 81
+
+
+No terminales con las reglas donde aparecen
+
+    $accept (46)
+        on left: 0
+    Programa (47)
+        on left: 1 2
+        on right: 0
+    bloque (48)
+        on left: 3 4 5 6 7 8
+        on right: 1 2 17 18 48 49 50 52 53 55 56 73 74
+    Declaracion (49)
+        on left: 9 10 11 12
+        on right: 3 4 5 6 11 12
+    declarar_variable (50)
+        on left: 13 14 15 16
+        on right: 9 11
+    declarar_funcion (51)
+        on left: 17 18
+        on right: 10 12
+    lista_ID (52)
+        on left: 19 20 21
+        on right: 13 15 16 20 21 58 60 61 65 69 70
+    Parametros (53)
+        on left: 22 23 24 25 26 27 28
+        on right: 17 24 25 27
+    Sentencias (54)
+        on left: 29 30
+        on right: 3 4 5 7 29
+    Sentencia (55)
+        on left: 31 32 33 34 35 36 37 38 39 40 41
+        on right: 29 30
+    llamada_subprog (56)
+        on left: 42 43 44
+        on right: 86
+    sentencia_asignacion (57)
+        on left: 45 46 47
+        on right: 14 31
+    sentencia_if (58)
+        on left: 48 49
+        on right: 32
+    sentencia_else_if (59)
+        on left: 50 51 52
+        on right: 48 50
+    sentencia_else (60)
+        on left: 53 54
+        on right: 51
+    sentencia_while (61)
+        on left: 55 56
+        on right: 33
+    sentencia_entrada (62)
+        on left: 57 58 59 60 61 62
+        on right: 34
+    sentencia_salida (63)
+        on left: 63 64 65 66 67 68 69 70
+        on right: 35
+    sentencia_return (64)
+        on left: 71 72
+        on right: 36
+    sentencia_repeat_until (65)
+        on left: 73 74
+        on right: 37
+    sentencia_mover_lista (66)
+        on left: 75 76
+        on right: 38
+    sentencia_comenzar_lista (67)
+        on left: 77 78
+        on right: 39
+    sentencia_lista_aniadir_en (68)
+        on left: 79 80 81
+        on right: 40
+    lista_expresiones_o_cadena (69)
+        on left: 82 83
+        on right: 42 44 46 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 83
+    expresion (70)
+        on left: 84 85 86 87 88 89 90
+        on right: 23 25 45 48 49 50 52 71 73 74 78 79 80 81 82 83 89 90 91 92 93 94 95 96 97 98 99 100 101 102 103 104 105 106
+    expresion_binaria (71)
+        on left: 91 92 93 94 95 96 97 98 99
+        on right: 84
+    expresion_unaria (72)
+        on left: 100 101 102 103 104 105 106
+        on right: 85
+    tipo_dato (73)
+        on left: 107 108
+        on right: 13 14 15 17 18 22 23 24 25 27 28 108
+    constante (74)
+        on left: 109 110 111 112 113
+        on right: 87
+
+
+Estado 0
+
+    0 $accept: • Programa $end
+
+    error    desplazar e ir al estado 1
+    PROGRAM  desplazar e ir al estado 2
+
+    Programa  ir al estado 3
+
+
+Estado 1
+
+    2 Programa: error • bloque
+
+    LLAVE_IZQ  desplazar e ir al estado 4
+
+    bloque  ir al estado 5
+
+
+Estado 2
+
+    1 Programa: PROGRAM • ID bloque
+
+    ID  desplazar e ir al estado 6
+
+
+Estado 3
+
+    0 $accept: Programa • $end
+
+    $end  desplazar e ir al estado 7
+
+
+Estado 4
+
+    3 bloque: LLAVE_IZQ • Declaracion Sentencias LLAVE_DER
+    4       | LLAVE_IZQ • Sentencias Declaracion LLAVE_DER
+    5       | LLAVE_IZQ • Declaracion Sentencias Declaracion LLAVE_DER
+    6       | LLAVE_IZQ • Declaracion LLAVE_DER
+    7       | LLAVE_IZQ • Sentencias LLAVE_DER
+    8       | LLAVE_IZQ • LLAVE_DER
+
+    error          desplazar e ir al estado 8
+    INPUT          desplazar e ir al estado 9
+    OUTPUT         desplazar e ir al estado 10
+    ID             desplazar e ir al estado 11
+    IF             desplazar e ir al estado 12
+    RETURN         desplazar e ir al estado 13
+    WHILE          desplazar e ir al estado 14
+    REPEAT         desplazar e ir al estado 15
+    TIPO_DATO      desplazar e ir al estado 16
+    LISTA          desplazar e ir al estado 17
+    LLAVE_DER      desplazar e ir al estado 18
+    OP_INIT_LISTA  desplazar e ir al estado 19
+
+    Declaracion                 ir al estado 20
+    declarar_variable           ir al estado 21
+    declarar_funcion            ir al estado 22
+    Sentencias                  ir al estado 23
+    Sentencia                   ir al estado 24
+    sentencia_asignacion        ir al estado 25
+    sentencia_if                ir al estado 26
+    sentencia_while             ir al estado 27
+    sentencia_entrada           ir al estado 28
+    sentencia_salida            ir al estado 29
+    sentencia_return            ir al estado 30
+    sentencia_repeat_until      ir al estado 31
+    sentencia_mover_lista       ir al estado 32
+    sentencia_comenzar_lista    ir al estado 33
+    sentencia_lista_aniadir_en  ir al estado 34
+    tipo_dato                   ir al estado 35
+
+
+Estado 5
+
+    2 Programa: error bloque •
+
+    $default  reduce usando la regla 2 (Programa)
+
+
+Estado 6
+
+    1 Programa: PROGRAM ID • bloque
+
+    LLAVE_IZQ  desplazar e ir al estado 4
+
+    bloque  ir al estado 36
+
+
+Estado 7
+
+    0 $accept: Programa $end •
+
+    $default  aceptar
+
+
+Estado 8
+
+   16 declarar_variable: error • lista_ID PYC
+   41 Sentencia: error • PYC
+
+    ID   desplazar e ir al estado 37
+    PYC  desplazar e ir al estado 38
+
+    lista_ID  ir al estado 39
+
+
+Estado 9
+
+   57 sentencia_entrada: INPUT • PAR_IZQ lista_expresiones_o_cadena PAR_DER PYC
+   58                  | INPUT • PAR_IZQ COMILLAS lista_expresiones_o_cadena COMILLAS COMA lista_ID PAR_DER PYC
+   59                  | INPUT • PAR_IZQ lista_expresiones_o_cadena PAR_DER
+   60                  | INPUT • PAR_IZQ COMILLAS lista_expresiones_o_cadena COMILLAS COMA lista_ID PAR_DER error
+   61                  | INPUT • PAR_IZQ COMILLAS lista_expresiones_o_cadena COMILLAS lista_ID PAR_DER PYC
+   62                  | INPUT • PAR_IZQ COMILLAS lista_expresiones_o_cadena PAR_DER
+
+    PAR_IZQ  desplazar e ir al estado 40
+
+
+Estado 10
+
+   63 sentencia_salida: OUTPUT • PAR_IZQ lista_expresiones_o_cadena PAR_DER PYC
+   64                 | OUTPUT • PAR_IZQ COMILLAS lista_expresiones_o_cadena COMILLAS PAR_DER PYC
+   65                 | OUTPUT • PAR_IZQ COMILLAS lista_expresiones_o_cadena COMILLAS COMA lista_ID PAR_DER PYC
+   66                 | OUTPUT • PAR_IZQ lista_expresiones_o_cadena PAR_DER error
+   67                 | OUTPUT • PAR_IZQ COMILLAS lista_expresiones_o_cadena COMILLAS PAR_DER error
+   68                 | OUTPUT • PAR_IZQ COMILLAS lista_expresiones_o_cadena PAR_DER
+   69                 | OUTPUT • PAR_IZQ COMILLAS lista_expresiones_o_cadena COMILLAS COMA lista_ID PAR_DER error
+   70                 | OUTPUT • PAR_IZQ COMILLAS lista_expresiones_o_cadena COMILLAS lista_ID PAR_DER PYC
+
+    PAR_IZQ  desplazar e ir al estado 41
+
+
+Estado 11
+
+   45 sentencia_asignacion: ID • OP_ASIGNACION expresion PYC
+   46                     | ID • OP_ASIGNACION COR_IZQ lista_expresiones_o_cadena COR_DER PYC
+   47                     | ID • OP_ASIGNACION error
+   75 sentencia_mover_lista: ID • OP_LISTA PYC
+   76                      | ID • OP_LISTA ID PYC
+   78 sentencia_comenzar_lista: ID • OP_INIT_LISTA expresion PYC
+   79 sentencia_lista_aniadir_en: ID • OP_ACCESO expresion PYC
+   80                           | ID • OP_ACCESO expresion OP_INCREMENT expresion PYC
+   81                           | ID • OP_ACCESO expresion error
+
+    OP_ASIGNACION  desplazar e ir al estado 42
+    OP_INIT_LISTA  desplazar e ir al estado 43
+    OP_LISTA       desplazar e ir al estado 44
+    OP_ACCESO      desplazar e ir al estado 45
+
+
+Estado 12
+
+   48 sentencia_if: IF • PAR_IZQ expresion PAR_DER bloque sentencia_else_if
+   49             | IF • PAR_IZQ expresion bloque
+
+    PAR_IZQ  desplazar e ir al estado 46
+
+
+Estado 13
+
+   71 sentencia_return: RETURN • expresion PYC
+   72                 | RETURN • PYC
+
+    ID            desplazar e ir al estado 47
+    CADENA        desplazar e ir al estado 48
+    PYC           desplazar e ir al estado 49
+    BOOL_VALUE    desplazar e ir al estado 50
+    LETRA         desplazar e ir al estado 51
+    NUMERO        desplazar e ir al estado 52
+    PAR_IZQ       desplazar e ir al estado 53
+    OP_SUM_RES    desplazar e ir al estado 54
+    OP_MULT       desplazar e ir al estado 55
+    OP_R          desplazar e ir al estado 56
+    OP_INCREMENT  desplazar e ir al estado 57
+    OP_DECREMENT  desplazar e ir al estado 58
+
+    llamada_subprog    ir al estado 59
+    expresion          ir al estado 60
+    expresion_binaria  ir al estado 61
+    expresion_unaria   ir al estado 62
+    constante          ir al estado 63
+
+
+Estado 14
+
+   55 sentencia_while: WHILE • PAR_IZQ lista_expresiones_o_cadena PAR_DER bloque
+   56                | WHILE • PAR_IZQ lista_expresiones_o_cadena bloque
+
+    PAR_IZQ  desplazar e ir al estado 64
+
+
+Estado 15
+
+   73 sentencia_repeat_until: REPEAT • bloque UNTIL PAR_IZQ expresion PAR_DER PYC
+   74                       | REPEAT • bloque UNTIL PAR_IZQ expresion PAR_DER error
+
+    LLAVE_IZQ  desplazar e ir al estado 4
+
+    bloque  ir al estado 65
+
+
+Estado 16
+
+  107 tipo_dato: TIPO_DATO •
+
+    $default  reduce usando la regla 107 (tipo_dato)
+
+
+Estado 17
+
+  108 tipo_dato: LISTA • MENOR_QUE tipo_dato MAYOR_QUE
+
+    MENOR_QUE  desplazar e ir al estado 66
+
+
+Estado 18
+
+    8 bloque: LLAVE_IZQ LLAVE_DER •
+
+    $default  reduce usando la regla 8 (bloque)
+
+
+Estado 19
+
+   77 sentencia_comenzar_lista: OP_INIT_LISTA • ID PYC
+
+    ID  desplazar e ir al estado 67
+
+
+Estado 20
+
+    3 bloque: LLAVE_IZQ Declaracion • Sentencias LLAVE_DER
+    5       | LLAVE_IZQ Declaracion • Sentencias Declaracion LLAVE_DER
+    6       | LLAVE_IZQ Declaracion • LLAVE_DER
+   11 Declaracion: Declaracion • declarar_variable
+   12            | Declaracion • declarar_funcion
+
+    error          desplazar e ir al estado 8
+    INPUT          desplazar e ir al estado 9
+    OUTPUT         desplazar e ir al estado 10
+    ID             desplazar e ir al estado 11
+    IF             desplazar e ir al estado 12
+    RETURN         desplazar e ir al estado 13
+    WHILE          desplazar e ir al estado 14
+    REPEAT         desplazar e ir al estado 15
+    TIPO_DATO      desplazar e ir al estado 16
+    LISTA          desplazar e ir al estado 17
+    LLAVE_DER      desplazar e ir al estado 68
+    OP_INIT_LISTA  desplazar e ir al estado 19
+
+    declarar_variable           ir al estado 69
+    declarar_funcion            ir al estado 70
+    Sentencias                  ir al estado 71
+    Sentencia                   ir al estado 24
+    sentencia_asignacion        ir al estado 25
+    sentencia_if                ir al estado 26
+    sentencia_while             ir al estado 27
+    sentencia_entrada           ir al estado 28
+    sentencia_salida            ir al estado 29
+    sentencia_return            ir al estado 30
+    sentencia_repeat_until      ir al estado 31
+    sentencia_mover_lista       ir al estado 32
+    sentencia_comenzar_lista    ir al estado 33
+    sentencia_lista_aniadir_en  ir al estado 34
+    tipo_dato                   ir al estado 35
+
+
+Estado 21
+
+    9 Declaracion: declarar_variable •
+
+    $default  reduce usando la regla 9 (Declaracion)
+
+
+Estado 22
+
+   10 Declaracion: declarar_funcion •
+
+    $default  reduce usando la regla 10 (Declaracion)
+
+
+Estado 23
+
+    4 bloque: LLAVE_IZQ Sentencias • Declaracion LLAVE_DER
+    7       | LLAVE_IZQ Sentencias • LLAVE_DER
+   29 Sentencias: Sentencias • Sentencia
+
+    error          desplazar e ir al estado 8
+    INPUT          desplazar e ir al estado 9
+    OUTPUT         desplazar e ir al estado 10
+    ID             desplazar e ir al estado 11
+    IF             desplazar e ir al estado 12
+    RETURN         desplazar e ir al estado 13
+    WHILE          desplazar e ir al estado 14
+    REPEAT         desplazar e ir al estado 15
+    TIPO_DATO      desplazar e ir al estado 16
+    LISTA          desplazar e ir al estado 17
+    LLAVE_DER      desplazar e ir al estado 72
+    OP_INIT_LISTA  desplazar e ir al estado 19
+
+    Declaracion                 ir al estado 73
+    declarar_variable           ir al estado 21
+    declarar_funcion            ir al estado 22
+    Sentencia                   ir al estado 74
+    sentencia_asignacion        ir al estado 25
+    sentencia_if                ir al estado 26
+    sentencia_while             ir al estado 27
+    sentencia_entrada           ir al estado 28
+    sentencia_salida            ir al estado 29
+    sentencia_return            ir al estado 30
+    sentencia_repeat_until      ir al estado 31
+    sentencia_mover_lista       ir al estado 32
+    sentencia_comenzar_lista    ir al estado 33
+    sentencia_lista_aniadir_en  ir al estado 34
+    tipo_dato                   ir al estado 35
+
+
+Estado 24
+
+   30 Sentencias: Sentencia •
+
+    $default  reduce usando la regla 30 (Sentencias)
+
+
+Estado 25
+
+   31 Sentencia: sentencia_asignacion •
+
+    $default  reduce usando la regla 31 (Sentencia)
+
+
+Estado 26
+
+   32 Sentencia: sentencia_if •
+
+    $default  reduce usando la regla 32 (Sentencia)
+
+
+Estado 27
+
+   33 Sentencia: sentencia_while •
+
+    $default  reduce usando la regla 33 (Sentencia)
+
+
+Estado 28
+
+   34 Sentencia: sentencia_entrada •
+
+    $default  reduce usando la regla 34 (Sentencia)
+
+
+Estado 29
+
+   35 Sentencia: sentencia_salida •
+
+    $default  reduce usando la regla 35 (Sentencia)
+
+
+Estado 30
+
+   36 Sentencia: sentencia_return •
+
+    $default  reduce usando la regla 36 (Sentencia)
+
+
+Estado 31
+
+   37 Sentencia: sentencia_repeat_until •
+
+    $default  reduce usando la regla 37 (Sentencia)
+
+
+Estado 32
+
+   38 Sentencia: sentencia_mover_lista •
+
+    $default  reduce usando la regla 38 (Sentencia)
+
+
+Estado 33
+
+   39 Sentencia: sentencia_comenzar_lista •
+
+    $default  reduce usando la regla 39 (Sentencia)
+
+
+Estado 34
+
+   40 Sentencia: sentencia_lista_aniadir_en •
+
+    $default  reduce usando la regla 40 (Sentencia)
+
+
+Estado 35
+
+   13 declarar_variable: tipo_dato • lista_ID PYC
+   14                  | tipo_dato • sentencia_asignacion
+   15                  | tipo_dato • lista_ID error
+   17 declarar_funcion: tipo_dato • ID PAR_IZQ Parametros PAR_DER bloque
+   18                 | tipo_dato • ID PAR_IZQ PAR_DER bloque
+
+    ID  desplazar e ir al estado 75
+
+    lista_ID              ir al estado 76
+    sentencia_asignacion  ir al estado 77
+
+
+Estado 36
+
+    1 Programa: PROGRAM ID bloque •
+
+    $default  reduce usando la regla 1 (Programa)
+
+
+Estado 37
+
+   19 lista_ID: ID •
+
+    $default  reduce usando la regla 19 (lista_ID)
+
+
+Estado 38
+
+   41 Sentencia: error PYC •
+
+    $default  reduce usando la regla 41 (Sentencia)
+
+
+Estado 39
+
+   16 declarar_variable: error lista_ID • PYC
+   20 lista_ID: lista_ID • COMA ID
+   21         | lista_ID • ID error
+
+    ID    desplazar e ir al estado 78
+    PYC   desplazar e ir al estado 79
+    COMA  desplazar e ir al estado 80
+
+
+Estado 40
+
+   57 sentencia_entrada: INPUT PAR_IZQ • lista_expresiones_o_cadena PAR_DER PYC
+   58                  | INPUT PAR_IZQ • COMILLAS lista_expresiones_o_cadena COMILLAS COMA lista_ID PAR_DER PYC
+   59                  | INPUT PAR_IZQ • lista_expresiones_o_cadena PAR_DER
+   60                  | INPUT PAR_IZQ • COMILLAS lista_expresiones_o_cadena COMILLAS COMA lista_ID PAR_DER error
+   61                  | INPUT PAR_IZQ • COMILLAS lista_expresiones_o_cadena COMILLAS lista_ID PAR_DER PYC
+   62                  | INPUT PAR_IZQ • COMILLAS lista_expresiones_o_cadena PAR_DER
+
+    ID            desplazar e ir al estado 47
+    CADENA        desplazar e ir al estado 48
+    COMILLAS      desplazar e ir al estado 81
+    BOOL_VALUE    desplazar e ir al estado 50
+    LETRA         desplazar e ir al estado 51
+    NUMERO        desplazar e ir al estado 52
+    PAR_IZQ       desplazar e ir al estado 53
+    OP_SUM_RES    desplazar e ir al estado 54
+    OP_MULT       desplazar e ir al estado 55
+    OP_R          desplazar e ir al estado 56
+    OP_INCREMENT  desplazar e ir al estado 57
+    OP_DECREMENT  desplazar e ir al estado 58
+
+    llamada_subprog             ir al estado 59
+    lista_expresiones_o_cadena  ir al estado 82
+    expresion                   ir al estado 83
+    expresion_binaria           ir al estado 61
+    expresion_unaria            ir al estado 62
+    constante                   ir al estado 63
+
+
+Estado 41
+
+   63 sentencia_salida: OUTPUT PAR_IZQ • lista_expresiones_o_cadena PAR_DER PYC
+   64                 | OUTPUT PAR_IZQ • COMILLAS lista_expresiones_o_cadena COMILLAS PAR_DER PYC
+   65                 | OUTPUT PAR_IZQ • COMILLAS lista_expresiones_o_cadena COMILLAS COMA lista_ID PAR_DER PYC
+   66                 | OUTPUT PAR_IZQ • lista_expresiones_o_cadena PAR_DER error
+   67                 | OUTPUT PAR_IZQ • COMILLAS lista_expresiones_o_cadena COMILLAS PAR_DER error
+   68                 | OUTPUT PAR_IZQ • COMILLAS lista_expresiones_o_cadena PAR_DER
+   69                 | OUTPUT PAR_IZQ • COMILLAS lista_expresiones_o_cadena COMILLAS COMA lista_ID PAR_DER error
+   70                 | OUTPUT PAR_IZQ • COMILLAS lista_expresiones_o_cadena COMILLAS lista_ID PAR_DER PYC
+
+    ID            desplazar e ir al estado 47
+    CADENA        desplazar e ir al estado 48
+    COMILLAS      desplazar e ir al estado 84
+    BOOL_VALUE    desplazar e ir al estado 50
+    LETRA         desplazar e ir al estado 51
+    NUMERO        desplazar e ir al estado 52
+    PAR_IZQ       desplazar e ir al estado 53
+    OP_SUM_RES    desplazar e ir al estado 54
+    OP_MULT       desplazar e ir al estado 55
+    OP_R          desplazar e ir al estado 56
+    OP_INCREMENT  desplazar e ir al estado 57
+    OP_DECREMENT  desplazar e ir al estado 58
+
+    llamada_subprog             ir al estado 59
+    lista_expresiones_o_cadena  ir al estado 85
+    expresion                   ir al estado 83
+    expresion_binaria           ir al estado 61
+    expresion_unaria            ir al estado 62
+    constante                   ir al estado 63
+
+
+Estado 42
+
+   45 sentencia_asignacion: ID OP_ASIGNACION • expresion PYC
+   46                     | ID OP_ASIGNACION • COR_IZQ lista_expresiones_o_cadena COR_DER PYC
+   47                     | ID OP_ASIGNACION • error
+
+    error         desplazar e ir al estado 86
+    ID            desplazar e ir al estado 47
+    CADENA        desplazar e ir al estado 48
+    BOOL_VALUE    desplazar e ir al estado 50
+    LETRA         desplazar e ir al estado 51
+    NUMERO        desplazar e ir al estado 52
+    PAR_IZQ       desplazar e ir al estado 53
+    COR_IZQ       desplazar e ir al estado 87
+    OP_SUM_RES    desplazar e ir al estado 54
+    OP_MULT       desplazar e ir al estado 55
+    OP_R          desplazar e ir al estado 56
+    OP_INCREMENT  desplazar e ir al estado 57
+    OP_DECREMENT  desplazar e ir al estado 58
+
+    llamada_subprog    ir al estado 59
+    expresion          ir al estado 88
+    expresion_binaria  ir al estado 61
+    expresion_unaria   ir al estado 62
+    constante          ir al estado 63
+
+
+Estado 43
+
+   78 sentencia_comenzar_lista: ID OP_INIT_LISTA • expresion PYC
+
+    ID            desplazar e ir al estado 47
+    CADENA        desplazar e ir al estado 48
+    BOOL_VALUE    desplazar e ir al estado 50
+    LETRA         desplazar e ir al estado 51
+    NUMERO        desplazar e ir al estado 52
+    PAR_IZQ       desplazar e ir al estado 53
+    OP_SUM_RES    desplazar e ir al estado 54
+    OP_MULT       desplazar e ir al estado 55
+    OP_R          desplazar e ir al estado 56
+    OP_INCREMENT  desplazar e ir al estado 57
+    OP_DECREMENT  desplazar e ir al estado 58
+
+    llamada_subprog    ir al estado 59
+    expresion          ir al estado 89
+    expresion_binaria  ir al estado 61
+    expresion_unaria   ir al estado 62
+    constante          ir al estado 63
+
+
+Estado 44
+
+   75 sentencia_mover_lista: ID OP_LISTA • PYC
+   76                      | ID OP_LISTA • ID PYC
+
+    ID   desplazar e ir al estado 90
+    PYC  desplazar e ir al estado 91
+
+
+Estado 45
+
+   79 sentencia_lista_aniadir_en: ID OP_ACCESO • expresion PYC
+   80                           | ID OP_ACCESO • expresion OP_INCREMENT expresion PYC
+   81                           | ID OP_ACCESO • expresion error
+
+    ID            desplazar e ir al estado 47
+    CADENA        desplazar e ir al estado 48
+    BOOL_VALUE    desplazar e ir al estado 50
+    LETRA         desplazar e ir al estado 51
+    NUMERO        desplazar e ir al estado 52
+    PAR_IZQ       desplazar e ir al estado 53
+    OP_SUM_RES    desplazar e ir al estado 54
+    OP_MULT       desplazar e ir al estado 55
+    OP_R          desplazar e ir al estado 56
+    OP_INCREMENT  desplazar e ir al estado 57
+    OP_DECREMENT  desplazar e ir al estado 58
+
+    llamada_subprog    ir al estado 59
+    expresion          ir al estado 92
+    expresion_binaria  ir al estado 61
+    expresion_unaria   ir al estado 62
+    constante          ir al estado 63
+
+
+Estado 46
+
+   48 sentencia_if: IF PAR_IZQ • expresion PAR_DER bloque sentencia_else_if
+   49             | IF PAR_IZQ • expresion bloque
+
+    ID            desplazar e ir al estado 47
+    CADENA        desplazar e ir al estado 48
+    BOOL_VALUE    desplazar e ir al estado 50
+    LETRA         desplazar e ir al estado 51
+    NUMERO        desplazar e ir al estado 52
+    PAR_IZQ       desplazar e ir al estado 53
+    OP_SUM_RES    desplazar e ir al estado 54
+    OP_MULT       desplazar e ir al estado 55
+    OP_R          desplazar e ir al estado 56
+    OP_INCREMENT  desplazar e ir al estado 57
+    OP_DECREMENT  desplazar e ir al estado 58
+
+    llamada_subprog    ir al estado 59
+    expresion          ir al estado 93
+    expresion_binaria  ir al estado 61
+    expresion_unaria   ir al estado 62
+    constante          ir al estado 63
+
+
+Estado 47
+
+   42 llamada_subprog: ID • PAR_IZQ lista_expresiones_o_cadena PAR_DER
+   43                | ID • PAR_IZQ PAR_DER
+   44                | ID • PAR_IZQ lista_expresiones_o_cadena error
+   88 expresion: ID •
+
+    PAR_IZQ  desplazar e ir al estado 94
+
+    $default  reduce usando la regla 88 (expresion)
+
+
+Estado 48
+
+  111 constante: CADENA •
+
+    $default  reduce usando la regla 111 (constante)
+
+
+Estado 49
+
+   72 sentencia_return: RETURN PYC •
+
+    $default  reduce usando la regla 72 (sentencia_return)
+
+
+Estado 50
+
+  112 constante: BOOL_VALUE •
+
+    $default  reduce usando la regla 112 (constante)
+
+
+Estado 51
+
+  113 constante: LETRA •
+
+    $default  reduce usando la regla 113 (constante)
+
+
+Estado 52
+
+  109 constante: NUMERO •
+  110          | NUMERO • END_FLOAT
+
+    END_FLOAT  desplazar e ir al estado 95
+
+    $default  reduce usando la regla 109 (constante)
+
+
+Estado 53
+
+   89 expresion: PAR_IZQ • expresion PAR_DER
+   90          | PAR_IZQ • expresion error
+
+    ID            desplazar e ir al estado 47
+    CADENA        desplazar e ir al estado 48
+    BOOL_VALUE    desplazar e ir al estado 50
+    LETRA         desplazar e ir al estado 51
+    NUMERO        desplazar e ir al estado 52
+    PAR_IZQ       desplazar e ir al estado 53
+    OP_SUM_RES    desplazar e ir al estado 54
+    OP_MULT       desplazar e ir al estado 55
+    OP_R          desplazar e ir al estado 56
+    OP_INCREMENT  desplazar e ir al estado 57
+    OP_DECREMENT  desplazar e ir al estado 58
+
+    llamada_subprog    ir al estado 59
+    expresion          ir al estado 96
+    expresion_binaria  ir al estado 61
+    expresion_unaria   ir al estado 62
+    constante          ir al estado 63
+
+
+Estado 54
+
+  103 expresion_unaria: OP_SUM_RES • expresion
+
+    ID            desplazar e ir al estado 47
+    CADENA        desplazar e ir al estado 48
+    BOOL_VALUE    desplazar e ir al estado 50
+    LETRA         desplazar e ir al estado 51
+    NUMERO        desplazar e ir al estado 52
+    PAR_IZQ       desplazar e ir al estado 53
+    OP_SUM_RES    desplazar e ir al estado 54
+    OP_MULT       desplazar e ir al estado 55
+    OP_R          desplazar e ir al estado 56
+    OP_INCREMENT  desplazar e ir al estado 57
+    OP_DECREMENT  desplazar e ir al estado 58
+
+    llamada_subprog    ir al estado 59
+    expresion          ir al estado 97
+    expresion_binaria  ir al estado 61
+    expresion_unaria   ir al estado 62
+    constante          ir al estado 63
+
+
+Estado 55
+
+  104 expresion_unaria: OP_MULT • expresion
+
+    ID            desplazar e ir al estado 47
+    CADENA        desplazar e ir al estado 48
+    BOOL_VALUE    desplazar e ir al estado 50
+    LETRA         desplazar e ir al estado 51
+    NUMERO        desplazar e ir al estado 52
+    PAR_IZQ       desplazar e ir al estado 53
+    OP_SUM_RES    desplazar e ir al estado 54
+    OP_MULT       desplazar e ir al estado 55
+    OP_R          desplazar e ir al estado 56
+    OP_INCREMENT  desplazar e ir al estado 57
+    OP_DECREMENT  desplazar e ir al estado 58
+
+    llamada_subprog    ir al estado 59
+    expresion          ir al estado 98
+    expresion_binaria  ir al estado 61
+    expresion_unaria   ir al estado 62
+    constante          ir al estado 63
+
+
+Estado 56
+
+  102 expresion_unaria: OP_R • expresion
+
+    ID            desplazar e ir al estado 47
+    CADENA        desplazar e ir al estado 48
+    BOOL_VALUE    desplazar e ir al estado 50
+    LETRA         desplazar e ir al estado 51
+    NUMERO        desplazar e ir al estado 52
+    PAR_IZQ       desplazar e ir al estado 53
+    OP_SUM_RES    desplazar e ir al estado 54
+    OP_MULT       desplazar e ir al estado 55
+    OP_R          desplazar e ir al estado 56
+    OP_INCREMENT  desplazar e ir al estado 57
+    OP_DECREMENT  desplazar e ir al estado 58
+
+    llamada_subprog    ir al estado 59
+    expresion          ir al estado 99
+    expresion_binaria  ir al estado 61
+    expresion_unaria   ir al estado 62
+    constante          ir al estado 63
+
+
+Estado 57
+
+  100 expresion_unaria: OP_INCREMENT • expresion
+
+    ID            desplazar e ir al estado 47
+    CADENA        desplazar e ir al estado 48
+    BOOL_VALUE    desplazar e ir al estado 50
+    LETRA         desplazar e ir al estado 51
+    NUMERO        desplazar e ir al estado 52
+    PAR_IZQ       desplazar e ir al estado 53
+    OP_SUM_RES    desplazar e ir al estado 54
+    OP_MULT       desplazar e ir al estado 55
+    OP_R          desplazar e ir al estado 56
+    OP_INCREMENT  desplazar e ir al estado 57
+    OP_DECREMENT  desplazar e ir al estado 58
+
+    llamada_subprog    ir al estado 59
+    expresion          ir al estado 100
+    expresion_binaria  ir al estado 61
+    expresion_unaria   ir al estado 62
+    constante          ir al estado 63
+
+
+Estado 58
+
+  101 expresion_unaria: OP_DECREMENT • expresion
+
+    ID            desplazar e ir al estado 47
+    CADENA        desplazar e ir al estado 48
+    BOOL_VALUE    desplazar e ir al estado 50
+    LETRA         desplazar e ir al estado 51
+    NUMERO        desplazar e ir al estado 52
+    PAR_IZQ       desplazar e ir al estado 53
+    OP_SUM_RES    desplazar e ir al estado 54
+    OP_MULT       desplazar e ir al estado 55
+    OP_R          desplazar e ir al estado 56
+    OP_INCREMENT  desplazar e ir al estado 57
+    OP_DECREMENT  desplazar e ir al estado 58
+
+    llamada_subprog    ir al estado 59
+    expresion          ir al estado 101
+    expresion_binaria  ir al estado 61
+    expresion_unaria   ir al estado 62
+    constante          ir al estado 63
+
+
+Estado 59
+
+   86 expresion: llamada_subprog •
+
+    $default  reduce usando la regla 86 (expresion)
+
+
+Estado 60
+
+   71 sentencia_return: RETURN expresion • PYC
+   91 expresion_binaria: expresion • OP_SUM_RES expresion
+   92                  | expresion • OP_MULT expresion
+   93                  | expresion • MAYOR_QUE expresion
+   94                  | expresion • MENOR_QUE expresion
+   95                  | expresion • OP_LOGIC expresion
+   96                  | expresion • OP_AND expresion
+   97                  | expresion • OP_COMP expresion
+   98                  | expresion • OP_ARIT expresion
+   99                  | expresion • OP_DECREMENT expresion
+  105 expresion_unaria: expresion • OP_INCREMENT
+  106                 | expresion • OP_DECREMENT
+
+    PYC           desplazar e ir al estado 102
+    MENOR_QUE     desplazar e ir al estado 103
+    MAYOR_QUE     desplazar e ir al estado 104
+    OP_SUM_RES    desplazar e ir al estado 105
+    OP_MULT       desplazar e ir al estado 106
+    OP_ARIT       desplazar e ir al estado 107
+    OP_COMP       desplazar e ir al estado 108
+    OP_LOGIC      desplazar e ir al estado 109
+    OP_AND        desplazar e ir al estado 110
+    OP_INCREMENT  desplazar e ir al estado 111
+    OP_DECREMENT  desplazar e ir al estado 112
+
+
+Estado 61
+
+   84 expresion: expresion_binaria •
+
+    $default  reduce usando la regla 84 (expresion)
+
+
+Estado 62
+
+   85 expresion: expresion_unaria •
+
+    $default  reduce usando la regla 85 (expresion)
+
+
+Estado 63
+
+   87 expresion: constante •
+
+    $default  reduce usando la regla 87 (expresion)
+
+
+Estado 64
+
+   55 sentencia_while: WHILE PAR_IZQ • lista_expresiones_o_cadena PAR_DER bloque
+   56                | WHILE PAR_IZQ • lista_expresiones_o_cadena bloque
+
+    ID            desplazar e ir al estado 47
+    CADENA        desplazar e ir al estado 48
+    BOOL_VALUE    desplazar e ir al estado 50
+    LETRA         desplazar e ir al estado 51
+    NUMERO        desplazar e ir al estado 52
+    PAR_IZQ       desplazar e ir al estado 53
+    OP_SUM_RES    desplazar e ir al estado 54
+    OP_MULT       desplazar e ir al estado 55
+    OP_R          desplazar e ir al estado 56
+    OP_INCREMENT  desplazar e ir al estado 57
+    OP_DECREMENT  desplazar e ir al estado 58
+
+    llamada_subprog             ir al estado 59
+    lista_expresiones_o_cadena  ir al estado 113
+    expresion                   ir al estado 83
+    expresion_binaria           ir al estado 61
+    expresion_unaria            ir al estado 62
+    constante                   ir al estado 63
+
+
+Estado 65
+
+   73 sentencia_repeat_until: REPEAT bloque • UNTIL PAR_IZQ expresion PAR_DER PYC
+   74                       | REPEAT bloque • UNTIL PAR_IZQ expresion PAR_DER error
+
+    UNTIL  desplazar e ir al estado 114
+
+
+Estado 66
+
+  108 tipo_dato: LISTA MENOR_QUE • tipo_dato MAYOR_QUE
+
+    TIPO_DATO  desplazar e ir al estado 16
+    LISTA      desplazar e ir al estado 17
+
+    tipo_dato  ir al estado 115
+
+
+Estado 67
+
+   77 sentencia_comenzar_lista: OP_INIT_LISTA ID • PYC
+
+    PYC  desplazar e ir al estado 116
+
+
+Estado 68
+
+    6 bloque: LLAVE_IZQ Declaracion LLAVE_DER •
+
+    $default  reduce usando la regla 6 (bloque)
+
+
+Estado 69
+
+   11 Declaracion: Declaracion declarar_variable •
+
+    $default  reduce usando la regla 11 (Declaracion)
+
+
+Estado 70
+
+   12 Declaracion: Declaracion declarar_funcion •
+
+    $default  reduce usando la regla 12 (Declaracion)
+
+
+Estado 71
+
+    3 bloque: LLAVE_IZQ Declaracion Sentencias • LLAVE_DER
+    5       | LLAVE_IZQ Declaracion Sentencias • Declaracion LLAVE_DER
+   29 Sentencias: Sentencias • Sentencia
+
+    error          desplazar e ir al estado 8
+    INPUT          desplazar e ir al estado 9
+    OUTPUT         desplazar e ir al estado 10
+    ID             desplazar e ir al estado 11
+    IF             desplazar e ir al estado 12
+    RETURN         desplazar e ir al estado 13
+    WHILE          desplazar e ir al estado 14
+    REPEAT         desplazar e ir al estado 15
+    TIPO_DATO      desplazar e ir al estado 16
+    LISTA          desplazar e ir al estado 17
+    LLAVE_DER      desplazar e ir al estado 117
+    OP_INIT_LISTA  desplazar e ir al estado 19
+
+    Declaracion                 ir al estado 118
+    declarar_variable           ir al estado 21
+    declarar_funcion            ir al estado 22
+    Sentencia                   ir al estado 74
+    sentencia_asignacion        ir al estado 25
+    sentencia_if                ir al estado 26
+    sentencia_while             ir al estado 27
+    sentencia_entrada           ir al estado 28
+    sentencia_salida            ir al estado 29
+    sentencia_return            ir al estado 30
+    sentencia_repeat_until      ir al estado 31
+    sentencia_mover_lista       ir al estado 32
+    sentencia_comenzar_lista    ir al estado 33
+    sentencia_lista_aniadir_en  ir al estado 34
+    tipo_dato                   ir al estado 35
+
+
+Estado 72
+
+    7 bloque: LLAVE_IZQ Sentencias LLAVE_DER •
+
+    $default  reduce usando la regla 7 (bloque)
+
+
+Estado 73
+
+    4 bloque: LLAVE_IZQ Sentencias Declaracion • LLAVE_DER
+   11 Declaracion: Declaracion • declarar_variable
+   12            | Declaracion • declarar_funcion
+
+    error      desplazar e ir al estado 119
+    TIPO_DATO  desplazar e ir al estado 16
+    LISTA      desplazar e ir al estado 17
+    LLAVE_DER  desplazar e ir al estado 120
+
+    declarar_variable  ir al estado 69
+    declarar_funcion   ir al estado 70
+    tipo_dato          ir al estado 35
+
+
+Estado 74
+
+   29 Sentencias: Sentencias Sentencia •
+
+    $default  reduce usando la regla 29 (Sentencias)
+
+
+Estado 75
+
+   17 declarar_funcion: tipo_dato ID • PAR_IZQ Parametros PAR_DER bloque
+   18                 | tipo_dato ID • PAR_IZQ PAR_DER bloque
+   19 lista_ID: ID •
+   45 sentencia_asignacion: ID • OP_ASIGNACION expresion PYC
+   46                     | ID • OP_ASIGNACION COR_IZQ lista_expresiones_o_cadena COR_DER PYC
+   47                     | ID • OP_ASIGNACION error
+
+    OP_ASIGNACION  desplazar e ir al estado 42
+    PAR_IZQ        desplazar e ir al estado 121
+
+    $default  reduce usando la regla 19 (lista_ID)
+
+
+Estado 76
+
+   13 declarar_variable: tipo_dato lista_ID • PYC
+   15                  | tipo_dato lista_ID • error
+   20 lista_ID: lista_ID • COMA ID
+   21         | lista_ID • ID error
+
+    error  desplazar e ir al estado 122
+    ID     desplazar e ir al estado 78
+    PYC    desplazar e ir al estado 123
+    COMA   desplazar e ir al estado 80
+
+
+Estado 77
+
+   14 declarar_variable: tipo_dato sentencia_asignacion •
+
+    $default  reduce usando la regla 14 (declarar_variable)
+
+
+Estado 78
+
+   21 lista_ID: lista_ID ID • error
+
+    error  desplazar e ir al estado 124
+
+
+Estado 79
+
+   16 declarar_variable: error lista_ID PYC •
+
+    $default  reduce usando la regla 16 (declarar_variable)
+
+
+Estado 80
+
+   20 lista_ID: lista_ID COMA • ID
+
+    ID  desplazar e ir al estado 125
+
+
+Estado 81
+
+   58 sentencia_entrada: INPUT PAR_IZQ COMILLAS • lista_expresiones_o_cadena COMILLAS COMA lista_ID PAR_DER PYC
+   60                  | INPUT PAR_IZQ COMILLAS • lista_expresiones_o_cadena COMILLAS COMA lista_ID PAR_DER error
+   61                  | INPUT PAR_IZQ COMILLAS • lista_expresiones_o_cadena COMILLAS lista_ID PAR_DER PYC
+   62                  | INPUT PAR_IZQ COMILLAS • lista_expresiones_o_cadena PAR_DER
+
+    ID            desplazar e ir al estado 47
+    CADENA        desplazar e ir al estado 48
+    BOOL_VALUE    desplazar e ir al estado 50
+    LETRA         desplazar e ir al estado 51
+    NUMERO        desplazar e ir al estado 52
+    PAR_IZQ       desplazar e ir al estado 53
+    OP_SUM_RES    desplazar e ir al estado 54
+    OP_MULT       desplazar e ir al estado 55
+    OP_R          desplazar e ir al estado 56
+    OP_INCREMENT  desplazar e ir al estado 57
+    OP_DECREMENT  desplazar e ir al estado 58
+
+    llamada_subprog             ir al estado 59
+    lista_expresiones_o_cadena  ir al estado 126
+    expresion                   ir al estado 83
+    expresion_binaria           ir al estado 61
+    expresion_unaria            ir al estado 62
+    constante                   ir al estado 63
+
+
+Estado 82
+
+   57 sentencia_entrada: INPUT PAR_IZQ lista_expresiones_o_cadena • PAR_DER PYC
+   59                  | INPUT PAR_IZQ lista_expresiones_o_cadena • PAR_DER
+   83 lista_expresiones_o_cadena: lista_expresiones_o_cadena • COMA expresion
+
+    COMA     desplazar e ir al estado 127
+    PAR_DER  desplazar e ir al estado 128
+
+
+Estado 83
+
+   82 lista_expresiones_o_cadena: expresion •
+   91 expresion_binaria: expresion • OP_SUM_RES expresion
+   92                  | expresion • OP_MULT expresion
+   93                  | expresion • MAYOR_QUE expresion
+   94                  | expresion • MENOR_QUE expresion
+   95                  | expresion • OP_LOGIC expresion
+   96                  | expresion • OP_AND expresion
+   97                  | expresion • OP_COMP expresion
+   98                  | expresion • OP_ARIT expresion
+   99                  | expresion • OP_DECREMENT expresion
+  105 expresion_unaria: expresion • OP_INCREMENT
+  106                 | expresion • OP_DECREMENT
+
+    MENOR_QUE     desplazar e ir al estado 103
+    MAYOR_QUE     desplazar e ir al estado 104
+    OP_SUM_RES    desplazar e ir al estado 105
+    OP_MULT       desplazar e ir al estado 106
+    OP_ARIT       desplazar e ir al estado 107
+    OP_COMP       desplazar e ir al estado 108
+    OP_LOGIC      desplazar e ir al estado 109
+    OP_AND        desplazar e ir al estado 110
+    OP_INCREMENT  desplazar e ir al estado 111
+    OP_DECREMENT  desplazar e ir al estado 112
+
+    $default  reduce usando la regla 82 (lista_expresiones_o_cadena)
+
+
+Estado 84
+
+   64 sentencia_salida: OUTPUT PAR_IZQ COMILLAS • lista_expresiones_o_cadena COMILLAS PAR_DER PYC
+   65                 | OUTPUT PAR_IZQ COMILLAS • lista_expresiones_o_cadena COMILLAS COMA lista_ID PAR_DER PYC
+   67                 | OUTPUT PAR_IZQ COMILLAS • lista_expresiones_o_cadena COMILLAS PAR_DER error
+   68                 | OUTPUT PAR_IZQ COMILLAS • lista_expresiones_o_cadena PAR_DER
+   69                 | OUTPUT PAR_IZQ COMILLAS • lista_expresiones_o_cadena COMILLAS COMA lista_ID PAR_DER error
+   70                 | OUTPUT PAR_IZQ COMILLAS • lista_expresiones_o_cadena COMILLAS lista_ID PAR_DER PYC
+
+    ID            desplazar e ir al estado 47
+    CADENA        desplazar e ir al estado 48
+    BOOL_VALUE    desplazar e ir al estado 50
+    LETRA         desplazar e ir al estado 51
+    NUMERO        desplazar e ir al estado 52
+    PAR_IZQ       desplazar e ir al estado 53
+    OP_SUM_RES    desplazar e ir al estado 54
+    OP_MULT       desplazar e ir al estado 55
+    OP_R          desplazar e ir al estado 56
+    OP_INCREMENT  desplazar e ir al estado 57
+    OP_DECREMENT  desplazar e ir al estado 58
+
+    llamada_subprog             ir al estado 59
+    lista_expresiones_o_cadena  ir al estado 129
+    expresion                   ir al estado 83
+    expresion_binaria           ir al estado 61
+    expresion_unaria            ir al estado 62
+    constante                   ir al estado 63
+
+
+Estado 85
+
+   63 sentencia_salida: OUTPUT PAR_IZQ lista_expresiones_o_cadena • PAR_DER PYC
+   66                 | OUTPUT PAR_IZQ lista_expresiones_o_cadena • PAR_DER error
+   83 lista_expresiones_o_cadena: lista_expresiones_o_cadena • COMA expresion
+
+    COMA     desplazar e ir al estado 127
+    PAR_DER  desplazar e ir al estado 130
+
+
+Estado 86
+
+   47 sentencia_asignacion: ID OP_ASIGNACION error •
+
+    $default  reduce usando la regla 47 (sentencia_asignacion)
+
+
+Estado 87
+
+   46 sentencia_asignacion: ID OP_ASIGNACION COR_IZQ • lista_expresiones_o_cadena COR_DER PYC
+
+    ID            desplazar e ir al estado 47
+    CADENA        desplazar e ir al estado 48
+    BOOL_VALUE    desplazar e ir al estado 50
+    LETRA         desplazar e ir al estado 51
+    NUMERO        desplazar e ir al estado 52
+    PAR_IZQ       desplazar e ir al estado 53
+    OP_SUM_RES    desplazar e ir al estado 54
+    OP_MULT       desplazar e ir al estado 55
+    OP_R          desplazar e ir al estado 56
+    OP_INCREMENT  desplazar e ir al estado 57
+    OP_DECREMENT  desplazar e ir al estado 58
+
+    llamada_subprog             ir al estado 59
+    lista_expresiones_o_cadena  ir al estado 131
+    expresion                   ir al estado 83
+    expresion_binaria           ir al estado 61
+    expresion_unaria            ir al estado 62
+    constante                   ir al estado 63
+
+
+Estado 88
+
+   45 sentencia_asignacion: ID OP_ASIGNACION expresion • PYC
+   91 expresion_binaria: expresion • OP_SUM_RES expresion
+   92                  | expresion • OP_MULT expresion
+   93                  | expresion • MAYOR_QUE expresion
+   94                  | expresion • MENOR_QUE expresion
+   95                  | expresion • OP_LOGIC expresion
+   96                  | expresion • OP_AND expresion
+   97                  | expresion • OP_COMP expresion
+   98                  | expresion • OP_ARIT expresion
+   99                  | expresion • OP_DECREMENT expresion
+  105 expresion_unaria: expresion • OP_INCREMENT
+  106                 | expresion • OP_DECREMENT
+
+    PYC           desplazar e ir al estado 132
+    MENOR_QUE     desplazar e ir al estado 103
+    MAYOR_QUE     desplazar e ir al estado 104
+    OP_SUM_RES    desplazar e ir al estado 105
+    OP_MULT       desplazar e ir al estado 106
+    OP_ARIT       desplazar e ir al estado 107
+    OP_COMP       desplazar e ir al estado 108
+    OP_LOGIC      desplazar e ir al estado 109
+    OP_AND        desplazar e ir al estado 110
+    OP_INCREMENT  desplazar e ir al estado 111
+    OP_DECREMENT  desplazar e ir al estado 112
+
+
+Estado 89
+
+   78 sentencia_comenzar_lista: ID OP_INIT_LISTA expresion • PYC
+   91 expresion_binaria: expresion • OP_SUM_RES expresion
+   92                  | expresion • OP_MULT expresion
+   93                  | expresion • MAYOR_QUE expresion
+   94                  | expresion • MENOR_QUE expresion
+   95                  | expresion • OP_LOGIC expresion
+   96                  | expresion • OP_AND expresion
+   97                  | expresion • OP_COMP expresion
+   98                  | expresion • OP_ARIT expresion
+   99                  | expresion • OP_DECREMENT expresion
+  105 expresion_unaria: expresion • OP_INCREMENT
+  106                 | expresion • OP_DECREMENT
+
+    PYC           desplazar e ir al estado 133
+    MENOR_QUE     desplazar e ir al estado 103
+    MAYOR_QUE     desplazar e ir al estado 104
+    OP_SUM_RES    desplazar e ir al estado 105
+    OP_MULT       desplazar e ir al estado 106
+    OP_ARIT       desplazar e ir al estado 107
+    OP_COMP       desplazar e ir al estado 108
+    OP_LOGIC      desplazar e ir al estado 109
+    OP_AND        desplazar e ir al estado 110
+    OP_INCREMENT  desplazar e ir al estado 111
+    OP_DECREMENT  desplazar e ir al estado 112
+
+
+Estado 90
+
+   76 sentencia_mover_lista: ID OP_LISTA ID • PYC
+
+    PYC  desplazar e ir al estado 134
+
+
+Estado 91
+
+   75 sentencia_mover_lista: ID OP_LISTA PYC •
+
+    $default  reduce usando la regla 75 (sentencia_mover_lista)
+
+
+Estado 92
+
+   79 sentencia_lista_aniadir_en: ID OP_ACCESO expresion • PYC
+   80                           | ID OP_ACCESO expresion • OP_INCREMENT expresion PYC
+   81                           | ID OP_ACCESO expresion • error
+   91 expresion_binaria: expresion • OP_SUM_RES expresion
+   92                  | expresion • OP_MULT expresion
+   93                  | expresion • MAYOR_QUE expresion
+   94                  | expresion • MENOR_QUE expresion
+   95                  | expresion • OP_LOGIC expresion
+   96                  | expresion • OP_AND expresion
+   97                  | expresion • OP_COMP expresion
+   98                  | expresion • OP_ARIT expresion
+   99                  | expresion • OP_DECREMENT expresion
+  105 expresion_unaria: expresion • OP_INCREMENT
+  106                 | expresion • OP_DECREMENT
+
+    error         desplazar e ir al estado 135
+    PYC           desplazar e ir al estado 136
+    MENOR_QUE     desplazar e ir al estado 103
+    MAYOR_QUE     desplazar e ir al estado 104
+    OP_SUM_RES    desplazar e ir al estado 105
+    OP_MULT       desplazar e ir al estado 106
+    OP_ARIT       desplazar e ir al estado 107
+    OP_COMP       desplazar e ir al estado 108
+    OP_LOGIC      desplazar e ir al estado 109
+    OP_AND        desplazar e ir al estado 110
+    OP_INCREMENT  desplazar e ir al estado 137
+    OP_DECREMENT  desplazar e ir al estado 112
+
+
+Estado 93
+
+   48 sentencia_if: IF PAR_IZQ expresion • PAR_DER bloque sentencia_else_if
+   49             | IF PAR_IZQ expresion • bloque
+   91 expresion_binaria: expresion • OP_SUM_RES expresion
+   92                  | expresion • OP_MULT expresion
+   93                  | expresion • MAYOR_QUE expresion
+   94                  | expresion • MENOR_QUE expresion
+   95                  | expresion • OP_LOGIC expresion
+   96                  | expresion • OP_AND expresion
+   97                  | expresion • OP_COMP expresion
+   98                  | expresion • OP_ARIT expresion
+   99                  | expresion • OP_DECREMENT expresion
+  105 expresion_unaria: expresion • OP_INCREMENT
+  106                 | expresion • OP_DECREMENT
+
+    LLAVE_IZQ     desplazar e ir al estado 4
+    MENOR_QUE     desplazar e ir al estado 103
+    PAR_DER       desplazar e ir al estado 138
+    MAYOR_QUE     desplazar e ir al estado 104
+    OP_SUM_RES    desplazar e ir al estado 105
+    OP_MULT       desplazar e ir al estado 106
+    OP_ARIT       desplazar e ir al estado 107
+    OP_COMP       desplazar e ir al estado 108
+    OP_LOGIC      desplazar e ir al estado 109
+    OP_AND        desplazar e ir al estado 110
+    OP_INCREMENT  desplazar e ir al estado 111
+    OP_DECREMENT  desplazar e ir al estado 112
+
+    bloque  ir al estado 139
+
+
+Estado 94
+
+   42 llamada_subprog: ID PAR_IZQ • lista_expresiones_o_cadena PAR_DER
+   43                | ID PAR_IZQ • PAR_DER
+   44                | ID PAR_IZQ • lista_expresiones_o_cadena error
+
+    ID            desplazar e ir al estado 47
+    CADENA        desplazar e ir al estado 48
+    BOOL_VALUE    desplazar e ir al estado 50
+    LETRA         desplazar e ir al estado 51
+    NUMERO        desplazar e ir al estado 52
+    PAR_IZQ       desplazar e ir al estado 53
+    PAR_DER       desplazar e ir al estado 140
+    OP_SUM_RES    desplazar e ir al estado 54
+    OP_MULT       desplazar e ir al estado 55
+    OP_R          desplazar e ir al estado 56
+    OP_INCREMENT  desplazar e ir al estado 57
+    OP_DECREMENT  desplazar e ir al estado 58
+
+    llamada_subprog             ir al estado 59
+    lista_expresiones_o_cadena  ir al estado 141
+    expresion                   ir al estado 83
+    expresion_binaria           ir al estado 61
+    expresion_unaria            ir al estado 62
+    constante                   ir al estado 63
+
+
+Estado 95
+
+  110 constante: NUMERO END_FLOAT •
+
+    $default  reduce usando la regla 110 (constante)
+
+
+Estado 96
+
+   89 expresion: PAR_IZQ expresion • PAR_DER
+   90          | PAR_IZQ expresion • error
+   91 expresion_binaria: expresion • OP_SUM_RES expresion
+   92                  | expresion • OP_MULT expresion
+   93                  | expresion • MAYOR_QUE expresion
+   94                  | expresion • MENOR_QUE expresion
+   95                  | expresion • OP_LOGIC expresion
+   96                  | expresion • OP_AND expresion
+   97                  | expresion • OP_COMP expresion
+   98                  | expresion • OP_ARIT expresion
+   99                  | expresion • OP_DECREMENT expresion
+  105 expresion_unaria: expresion • OP_INCREMENT
+  106                 | expresion • OP_DECREMENT
+
+    error         desplazar e ir al estado 142
+    MENOR_QUE     desplazar e ir al estado 103
+    PAR_DER       desplazar e ir al estado 143
+    MAYOR_QUE     desplazar e ir al estado 104
+    OP_SUM_RES    desplazar e ir al estado 105
+    OP_MULT       desplazar e ir al estado 106
+    OP_ARIT       desplazar e ir al estado 107
+    OP_COMP       desplazar e ir al estado 108
+    OP_LOGIC      desplazar e ir al estado 109
+    OP_AND        desplazar e ir al estado 110
+    OP_INCREMENT  desplazar e ir al estado 111
+    OP_DECREMENT  desplazar e ir al estado 112
+
+
+Estado 97
+
+   91 expresion_binaria: expresion • OP_SUM_RES expresion
+   92                  | expresion • OP_MULT expresion
+   93                  | expresion • MAYOR_QUE expresion
+   94                  | expresion • MENOR_QUE expresion
+   95                  | expresion • OP_LOGIC expresion
+   96                  | expresion • OP_AND expresion
+   97                  | expresion • OP_COMP expresion
+   98                  | expresion • OP_ARIT expresion
+   99                  | expresion • OP_DECREMENT expresion
+  103 expresion_unaria: OP_SUM_RES expresion •
+  105                 | expresion • OP_INCREMENT
+  106                 | expresion • OP_DECREMENT
+
+    OP_MULT       desplazar e ir al estado 106
+    OP_ARIT       desplazar e ir al estado 107
+    OP_COMP       desplazar e ir al estado 108
+    OP_LOGIC      desplazar e ir al estado 109
+    OP_AND        desplazar e ir al estado 110
+    OP_INCREMENT  desplazar e ir al estado 111
+    OP_DECREMENT  desplazar e ir al estado 112
+
+    $default  reduce usando la regla 103 (expresion_unaria)
+
+
+Estado 98
+
+   91 expresion_binaria: expresion • OP_SUM_RES expresion
+   92                  | expresion • OP_MULT expresion
+   93                  | expresion • MAYOR_QUE expresion
+   94                  | expresion • MENOR_QUE expresion
+   95                  | expresion • OP_LOGIC expresion
+   96                  | expresion • OP_AND expresion
+   97                  | expresion • OP_COMP expresion
+   98                  | expresion • OP_ARIT expresion
+   99                  | expresion • OP_DECREMENT expresion
+  104 expresion_unaria: OP_MULT expresion •
+  105                 | expresion • OP_INCREMENT
+  106                 | expresion • OP_DECREMENT
+
+    OP_ARIT       desplazar e ir al estado 107
+    OP_COMP       desplazar e ir al estado 108
+    OP_LOGIC      desplazar e ir al estado 109
+    OP_AND        desplazar e ir al estado 110
+    OP_INCREMENT  desplazar e ir al estado 111
+    OP_DECREMENT  desplazar e ir al estado 112
+
+    $default  reduce usando la regla 104 (expresion_unaria)
+
+
+Estado 99
+
+   91 expresion_binaria: expresion • OP_SUM_RES expresion
+   92                  | expresion • OP_MULT expresion
+   93                  | expresion • MAYOR_QUE expresion
+   94                  | expresion • MENOR_QUE expresion
+   95                  | expresion • OP_LOGIC expresion
+   96                  | expresion • OP_AND expresion
+   97                  | expresion • OP_COMP expresion
+   98                  | expresion • OP_ARIT expresion
+   99                  | expresion • OP_DECREMENT expresion
+  102 expresion_unaria: OP_R expresion •
+  105                 | expresion • OP_INCREMENT
+  106                 | expresion • OP_DECREMENT
+
+    OP_INCREMENT  desplazar e ir al estado 111
+    OP_DECREMENT  desplazar e ir al estado 112
+
+    $default  reduce usando la regla 102 (expresion_unaria)
+
+
+Estado 100
+
+   91 expresion_binaria: expresion • OP_SUM_RES expresion
+   92                  | expresion • OP_MULT expresion
+   93                  | expresion • MAYOR_QUE expresion
+   94                  | expresion • MENOR_QUE expresion
+   95                  | expresion • OP_LOGIC expresion
+   96                  | expresion • OP_AND expresion
+   97                  | expresion • OP_COMP expresion
+   98                  | expresion • OP_ARIT expresion
+   99                  | expresion • OP_DECREMENT expresion
+  100 expresion_unaria: OP_INCREMENT expresion •
+  105                 | expresion • OP_INCREMENT
+  106                 | expresion • OP_DECREMENT
+
+    $default  reduce usando la regla 100 (expresion_unaria)
+
+
+Estado 101
+
+   91 expresion_binaria: expresion • OP_SUM_RES expresion
+   92                  | expresion • OP_MULT expresion
+   93                  | expresion • MAYOR_QUE expresion
+   94                  | expresion • MENOR_QUE expresion
+   95                  | expresion • OP_LOGIC expresion
+   96                  | expresion • OP_AND expresion
+   97                  | expresion • OP_COMP expresion
+   98                  | expresion • OP_ARIT expresion
+   99                  | expresion • OP_DECREMENT expresion
+  101 expresion_unaria: OP_DECREMENT expresion •
+  105                 | expresion • OP_INCREMENT
+  106                 | expresion • OP_DECREMENT
+
+    $default  reduce usando la regla 101 (expresion_unaria)
+
+
+Estado 102
+
+   71 sentencia_return: RETURN expresion PYC •
+
+    $default  reduce usando la regla 71 (sentencia_return)
+
+
+Estado 103
+
+   94 expresion_binaria: expresion MENOR_QUE • expresion
+
+    ID            desplazar e ir al estado 47
+    CADENA        desplazar e ir al estado 48
+    BOOL_VALUE    desplazar e ir al estado 50
+    LETRA         desplazar e ir al estado 51
+    NUMERO        desplazar e ir al estado 52
+    PAR_IZQ       desplazar e ir al estado 53
+    OP_SUM_RES    desplazar e ir al estado 54
+    OP_MULT       desplazar e ir al estado 55
+    OP_R          desplazar e ir al estado 56
+    OP_INCREMENT  desplazar e ir al estado 57
+    OP_DECREMENT  desplazar e ir al estado 58
+
+    llamada_subprog    ir al estado 59
+    expresion          ir al estado 144
+    expresion_binaria  ir al estado 61
+    expresion_unaria   ir al estado 62
+    constante          ir al estado 63
+
+
+Estado 104
+
+   93 expresion_binaria: expresion MAYOR_QUE • expresion
+
+    ID            desplazar e ir al estado 47
+    CADENA        desplazar e ir al estado 48
+    BOOL_VALUE    desplazar e ir al estado 50
+    LETRA         desplazar e ir al estado 51
+    NUMERO        desplazar e ir al estado 52
+    PAR_IZQ       desplazar e ir al estado 53
+    OP_SUM_RES    desplazar e ir al estado 54
+    OP_MULT       desplazar e ir al estado 55
+    OP_R          desplazar e ir al estado 56
+    OP_INCREMENT  desplazar e ir al estado 57
+    OP_DECREMENT  desplazar e ir al estado 58
+
+    llamada_subprog    ir al estado 59
+    expresion          ir al estado 145
+    expresion_binaria  ir al estado 61
+    expresion_unaria   ir al estado 62
+    constante          ir al estado 63
+
+
+Estado 105
+
+   91 expresion_binaria: expresion OP_SUM_RES • expresion
+
+    ID            desplazar e ir al estado 47
+    CADENA        desplazar e ir al estado 48
+    BOOL_VALUE    desplazar e ir al estado 50
+    LETRA         desplazar e ir al estado 51
+    NUMERO        desplazar e ir al estado 52
+    PAR_IZQ       desplazar e ir al estado 53
+    OP_SUM_RES    desplazar e ir al estado 54
+    OP_MULT       desplazar e ir al estado 55
+    OP_R          desplazar e ir al estado 56
+    OP_INCREMENT  desplazar e ir al estado 57
+    OP_DECREMENT  desplazar e ir al estado 58
+
+    llamada_subprog    ir al estado 59
+    expresion          ir al estado 146
+    expresion_binaria  ir al estado 61
+    expresion_unaria   ir al estado 62
+    constante          ir al estado 63
+
+
+Estado 106
+
+   92 expresion_binaria: expresion OP_MULT • expresion
+
+    ID            desplazar e ir al estado 47
+    CADENA        desplazar e ir al estado 48
+    BOOL_VALUE    desplazar e ir al estado 50
+    LETRA         desplazar e ir al estado 51
+    NUMERO        desplazar e ir al estado 52
+    PAR_IZQ       desplazar e ir al estado 53
+    OP_SUM_RES    desplazar e ir al estado 54
+    OP_MULT       desplazar e ir al estado 55
+    OP_R          desplazar e ir al estado 56
+    OP_INCREMENT  desplazar e ir al estado 57
+    OP_DECREMENT  desplazar e ir al estado 58
+
+    llamada_subprog    ir al estado 59
+    expresion          ir al estado 147
+    expresion_binaria  ir al estado 61
+    expresion_unaria   ir al estado 62
+    constante          ir al estado 63
+
+
+Estado 107
+
+   98 expresion_binaria: expresion OP_ARIT • expresion
+
+    ID            desplazar e ir al estado 47
+    CADENA        desplazar e ir al estado 48
+    BOOL_VALUE    desplazar e ir al estado 50
+    LETRA         desplazar e ir al estado 51
+    NUMERO        desplazar e ir al estado 52
+    PAR_IZQ       desplazar e ir al estado 53
+    OP_SUM_RES    desplazar e ir al estado 54
+    OP_MULT       desplazar e ir al estado 55
+    OP_R          desplazar e ir al estado 56
+    OP_INCREMENT  desplazar e ir al estado 57
+    OP_DECREMENT  desplazar e ir al estado 58
+
+    llamada_subprog    ir al estado 59
+    expresion          ir al estado 148
+    expresion_binaria  ir al estado 61
+    expresion_unaria   ir al estado 62
+    constante          ir al estado 63
+
+
+Estado 108
+
+   97 expresion_binaria: expresion OP_COMP • expresion
+
+    ID            desplazar e ir al estado 47
+    CADENA        desplazar e ir al estado 48
+    BOOL_VALUE    desplazar e ir al estado 50
+    LETRA         desplazar e ir al estado 51
+    NUMERO        desplazar e ir al estado 52
+    PAR_IZQ       desplazar e ir al estado 53
+    OP_SUM_RES    desplazar e ir al estado 54
+    OP_MULT       desplazar e ir al estado 55
+    OP_R          desplazar e ir al estado 56
+    OP_INCREMENT  desplazar e ir al estado 57
+    OP_DECREMENT  desplazar e ir al estado 58
+
+    llamada_subprog    ir al estado 59
+    expresion          ir al estado 149
+    expresion_binaria  ir al estado 61
+    expresion_unaria   ir al estado 62
+    constante          ir al estado 63
+
+
+Estado 109
+
+   95 expresion_binaria: expresion OP_LOGIC • expresion
+
+    ID            desplazar e ir al estado 47
+    CADENA        desplazar e ir al estado 48
+    BOOL_VALUE    desplazar e ir al estado 50
+    LETRA         desplazar e ir al estado 51
+    NUMERO        desplazar e ir al estado 52
+    PAR_IZQ       desplazar e ir al estado 53
+    OP_SUM_RES    desplazar e ir al estado 54
+    OP_MULT       desplazar e ir al estado 55
+    OP_R          desplazar e ir al estado 56
+    OP_INCREMENT  desplazar e ir al estado 57
+    OP_DECREMENT  desplazar e ir al estado 58
+
+    llamada_subprog    ir al estado 59
+    expresion          ir al estado 150
+    expresion_binaria  ir al estado 61
+    expresion_unaria   ir al estado 62
+    constante          ir al estado 63
+
+
+Estado 110
+
+   96 expresion_binaria: expresion OP_AND • expresion
+
+    ID            desplazar e ir al estado 47
+    CADENA        desplazar e ir al estado 48
+    BOOL_VALUE    desplazar e ir al estado 50
+    LETRA         desplazar e ir al estado 51
+    NUMERO        desplazar e ir al estado 52
+    PAR_IZQ       desplazar e ir al estado 53
+    OP_SUM_RES    desplazar e ir al estado 54
+    OP_MULT       desplazar e ir al estado 55
+    OP_R          desplazar e ir al estado 56
+    OP_INCREMENT  desplazar e ir al estado 57
+    OP_DECREMENT  desplazar e ir al estado 58
+
+    llamada_subprog    ir al estado 59
+    expresion          ir al estado 151
+    expresion_binaria  ir al estado 61
+    expresion_unaria   ir al estado 62
+    constante          ir al estado 63
+
+
+Estado 111
+
+  105 expresion_unaria: expresion OP_INCREMENT •
+
+    $default  reduce usando la regla 105 (expresion_unaria)
+
+
+Estado 112
+
+   99 expresion_binaria: expresion OP_DECREMENT • expresion
+  106 expresion_unaria: expresion OP_DECREMENT •
+
+    ID          desplazar e ir al estado 47
+    CADENA      desplazar e ir al estado 48
+    BOOL_VALUE  desplazar e ir al estado 50
+    LETRA       desplazar e ir al estado 51
+    NUMERO      desplazar e ir al estado 52
+    PAR_IZQ     desplazar e ir al estado 53
+    OP_R        desplazar e ir al estado 56
+
+    $default  reduce usando la regla 106 (expresion_unaria)
+
+    llamada_subprog    ir al estado 59
+    expresion          ir al estado 152
+    expresion_binaria  ir al estado 61
+    expresion_unaria   ir al estado 62
+    constante          ir al estado 63
+
+
+Estado 113
+
+   55 sentencia_while: WHILE PAR_IZQ lista_expresiones_o_cadena • PAR_DER bloque
+   56                | WHILE PAR_IZQ lista_expresiones_o_cadena • bloque
+   83 lista_expresiones_o_cadena: lista_expresiones_o_cadena • COMA expresion
+
+    COMA       desplazar e ir al estado 127
+    LLAVE_IZQ  desplazar e ir al estado 4
+    PAR_DER    desplazar e ir al estado 153
+
+    bloque  ir al estado 154
+
+
+Estado 114
+
+   73 sentencia_repeat_until: REPEAT bloque UNTIL • PAR_IZQ expresion PAR_DER PYC
+   74                       | REPEAT bloque UNTIL • PAR_IZQ expresion PAR_DER error
+
+    PAR_IZQ  desplazar e ir al estado 155
+
+
+Estado 115
+
+  108 tipo_dato: LISTA MENOR_QUE tipo_dato • MAYOR_QUE
+
+    MAYOR_QUE  desplazar e ir al estado 156
+
+
+Estado 116
+
+   77 sentencia_comenzar_lista: OP_INIT_LISTA ID PYC •
+
+    $default  reduce usando la regla 77 (sentencia_comenzar_lista)
+
+
+Estado 117
+
+    3 bloque: LLAVE_IZQ Declaracion Sentencias LLAVE_DER •
+
+    $default  reduce usando la regla 3 (bloque)
+
+
+Estado 118
+
+    5 bloque: LLAVE_IZQ Declaracion Sentencias Declaracion • LLAVE_DER
+   11 Declaracion: Declaracion • declarar_variable
+   12            | Declaracion • declarar_funcion
+
+    error      desplazar e ir al estado 119
+    TIPO_DATO  desplazar e ir al estado 16
+    LISTA      desplazar e ir al estado 17
+    LLAVE_DER  desplazar e ir al estado 157
+
+    declarar_variable  ir al estado 69
+    declarar_funcion   ir al estado 70
+    tipo_dato          ir al estado 35
+
+
+Estado 119
+
+   16 declarar_variable: error • lista_ID PYC
+
+    ID  desplazar e ir al estado 37
+
+    lista_ID  ir al estado 39
+
+
+Estado 120
+
+    4 bloque: LLAVE_IZQ Sentencias Declaracion LLAVE_DER •
+
+    $default  reduce usando la regla 4 (bloque)
+
+
+Estado 121
+
+   17 declarar_funcion: tipo_dato ID PAR_IZQ • Parametros PAR_DER bloque
+   18                 | tipo_dato ID PAR_IZQ • PAR_DER bloque
+
+    ID         desplazar e ir al estado 158
+    TIPO_DATO  desplazar e ir al estado 16
+    LISTA      desplazar e ir al estado 17
+    PAR_DER    desplazar e ir al estado 159
+
+    Parametros  ir al estado 160
+    tipo_dato   ir al estado 161
+
+
+Estado 122
+
+   15 declarar_variable: tipo_dato lista_ID error •
+
+    $default  reduce usando la regla 15 (declarar_variable)
+
+
+Estado 123
+
+   13 declarar_variable: tipo_dato lista_ID PYC •
+
+    $default  reduce usando la regla 13 (declarar_variable)
+
+
+Estado 124
+
+   21 lista_ID: lista_ID ID error •
+
+    $default  reduce usando la regla 21 (lista_ID)
+
+
+Estado 125
+
+   20 lista_ID: lista_ID COMA ID •
+
+    $default  reduce usando la regla 20 (lista_ID)
+
+
+Estado 126
+
+   58 sentencia_entrada: INPUT PAR_IZQ COMILLAS lista_expresiones_o_cadena • COMILLAS COMA lista_ID PAR_DER PYC
+   60                  | INPUT PAR_IZQ COMILLAS lista_expresiones_o_cadena • COMILLAS COMA lista_ID PAR_DER error
+   61                  | INPUT PAR_IZQ COMILLAS lista_expresiones_o_cadena • COMILLAS lista_ID PAR_DER PYC
+   62                  | INPUT PAR_IZQ COMILLAS lista_expresiones_o_cadena • PAR_DER
+   83 lista_expresiones_o_cadena: lista_expresiones_o_cadena • COMA expresion
+
+    COMA      desplazar e ir al estado 127
+    COMILLAS  desplazar e ir al estado 162
+    PAR_DER   desplazar e ir al estado 163
+
+
+Estado 127
+
+   83 lista_expresiones_o_cadena: lista_expresiones_o_cadena COMA • expresion
+
+    ID            desplazar e ir al estado 47
+    CADENA        desplazar e ir al estado 48
+    BOOL_VALUE    desplazar e ir al estado 50
+    LETRA         desplazar e ir al estado 51
+    NUMERO        desplazar e ir al estado 52
+    PAR_IZQ       desplazar e ir al estado 53
+    OP_SUM_RES    desplazar e ir al estado 54
+    OP_MULT       desplazar e ir al estado 55
+    OP_R          desplazar e ir al estado 56
+    OP_INCREMENT  desplazar e ir al estado 57
+    OP_DECREMENT  desplazar e ir al estado 58
+
+    llamada_subprog    ir al estado 59
+    expresion          ir al estado 164
+    expresion_binaria  ir al estado 61
+    expresion_unaria   ir al estado 62
+    constante          ir al estado 63
+
+
+Estado 128
+
+   57 sentencia_entrada: INPUT PAR_IZQ lista_expresiones_o_cadena PAR_DER • PYC
+   59                  | INPUT PAR_IZQ lista_expresiones_o_cadena PAR_DER •
+
+    PYC  desplazar e ir al estado 165
+
+    $default  reduce usando la regla 59 (sentencia_entrada)
+
+
+Estado 129
+
+   64 sentencia_salida: OUTPUT PAR_IZQ COMILLAS lista_expresiones_o_cadena • COMILLAS PAR_DER PYC
+   65                 | OUTPUT PAR_IZQ COMILLAS lista_expresiones_o_cadena • COMILLAS COMA lista_ID PAR_DER PYC
+   67                 | OUTPUT PAR_IZQ COMILLAS lista_expresiones_o_cadena • COMILLAS PAR_DER error
+   68                 | OUTPUT PAR_IZQ COMILLAS lista_expresiones_o_cadena • PAR_DER
+   69                 | OUTPUT PAR_IZQ COMILLAS lista_expresiones_o_cadena • COMILLAS COMA lista_ID PAR_DER error
+   70                 | OUTPUT PAR_IZQ COMILLAS lista_expresiones_o_cadena • COMILLAS lista_ID PAR_DER PYC
+   83 lista_expresiones_o_cadena: lista_expresiones_o_cadena • COMA expresion
+
+    COMA      desplazar e ir al estado 127
+    COMILLAS  desplazar e ir al estado 166
+    PAR_DER   desplazar e ir al estado 167
+
+
+Estado 130
+
+   63 sentencia_salida: OUTPUT PAR_IZQ lista_expresiones_o_cadena PAR_DER • PYC
+   66                 | OUTPUT PAR_IZQ lista_expresiones_o_cadena PAR_DER • error
+
+    error  desplazar e ir al estado 168
+    PYC    desplazar e ir al estado 169
+
+
+Estado 131
+
+   46 sentencia_asignacion: ID OP_ASIGNACION COR_IZQ lista_expresiones_o_cadena • COR_DER PYC
+   83 lista_expresiones_o_cadena: lista_expresiones_o_cadena • COMA expresion
+
+    COMA     desplazar e ir al estado 127
+    COR_DER  desplazar e ir al estado 170
+
+
+Estado 132
+
+   45 sentencia_asignacion: ID OP_ASIGNACION expresion PYC •
+
+    $default  reduce usando la regla 45 (sentencia_asignacion)
+
+
+Estado 133
+
+   78 sentencia_comenzar_lista: ID OP_INIT_LISTA expresion PYC •
+
+    $default  reduce usando la regla 78 (sentencia_comenzar_lista)
+
+
+Estado 134
+
+   76 sentencia_mover_lista: ID OP_LISTA ID PYC •
+
+    $default  reduce usando la regla 76 (sentencia_mover_lista)
+
+
+Estado 135
+
+   81 sentencia_lista_aniadir_en: ID OP_ACCESO expresion error •
+
+    $default  reduce usando la regla 81 (sentencia_lista_aniadir_en)
+
+
+Estado 136
+
+   79 sentencia_lista_aniadir_en: ID OP_ACCESO expresion PYC •
+
+    $default  reduce usando la regla 79 (sentencia_lista_aniadir_en)
+
+
+Estado 137
+
+   80 sentencia_lista_aniadir_en: ID OP_ACCESO expresion OP_INCREMENT • expresion PYC
+  105 expresion_unaria: expresion OP_INCREMENT •
+
+    ID          desplazar e ir al estado 47
+    CADENA      desplazar e ir al estado 48
+    BOOL_VALUE  desplazar e ir al estado 50
+    LETRA       desplazar e ir al estado 51
+    NUMERO      desplazar e ir al estado 52
+    PAR_IZQ     desplazar e ir al estado 53
+    OP_R        desplazar e ir al estado 56
+
+    $default  reduce usando la regla 105 (expresion_unaria)
+
+    llamada_subprog    ir al estado 59
+    expresion          ir al estado 171
+    expresion_binaria  ir al estado 61
+    expresion_unaria   ir al estado 62
+    constante          ir al estado 63
+
+
+Estado 138
+
+   48 sentencia_if: IF PAR_IZQ expresion PAR_DER • bloque sentencia_else_if
+
+    LLAVE_IZQ  desplazar e ir al estado 4
+
+    bloque  ir al estado 172
+
+
+Estado 139
+
+   49 sentencia_if: IF PAR_IZQ expresion bloque •
+
+    $default  reduce usando la regla 49 (sentencia_if)
+
+
+Estado 140
+
+   43 llamada_subprog: ID PAR_IZQ PAR_DER •
+
+    $default  reduce usando la regla 43 (llamada_subprog)
+
+
+Estado 141
+
+   42 llamada_subprog: ID PAR_IZQ lista_expresiones_o_cadena • PAR_DER
+   44                | ID PAR_IZQ lista_expresiones_o_cadena • error
+   83 lista_expresiones_o_cadena: lista_expresiones_o_cadena • COMA expresion
+
+    error    desplazar e ir al estado 173
+    COMA     desplazar e ir al estado 127
+    PAR_DER  desplazar e ir al estado 174
+
+
+Estado 142
+
+   90 expresion: PAR_IZQ expresion error •
+
+    $default  reduce usando la regla 90 (expresion)
+
+
+Estado 143
+
+   89 expresion: PAR_IZQ expresion PAR_DER •
+
+    $default  reduce usando la regla 89 (expresion)
+
+
+Estado 144
+
+   91 expresion_binaria: expresion • OP_SUM_RES expresion
+   92                  | expresion • OP_MULT expresion
+   93                  | expresion • MAYOR_QUE expresion
+   94                  | expresion • MENOR_QUE expresion
+   94                  | expresion MENOR_QUE expresion •
+   95                  | expresion • OP_LOGIC expresion
+   96                  | expresion • OP_AND expresion
+   97                  | expresion • OP_COMP expresion
+   98                  | expresion • OP_ARIT expresion
+   99                  | expresion • OP_DECREMENT expresion
+  105 expresion_unaria: expresion • OP_INCREMENT
+  106                 | expresion • OP_DECREMENT
+
+    MAYOR_QUE     desplazar e ir al estado 104
+    OP_SUM_RES    desplazar e ir al estado 105
+    OP_MULT       desplazar e ir al estado 106
+    OP_ARIT       desplazar e ir al estado 107
+    OP_COMP       desplazar e ir al estado 108
+    OP_LOGIC      desplazar e ir al estado 109
+    OP_AND        desplazar e ir al estado 110
+    OP_INCREMENT  desplazar e ir al estado 111
+    OP_DECREMENT  desplazar e ir al estado 112
+
+    $default  reduce usando la regla 94 (expresion_binaria)
+
+
+Estado 145
+
+   91 expresion_binaria: expresion • OP_SUM_RES expresion
+   92                  | expresion • OP_MULT expresion
+   93                  | expresion • MAYOR_QUE expresion
+   93                  | expresion MAYOR_QUE expresion •
+   94                  | expresion • MENOR_QUE expresion
+   95                  | expresion • OP_LOGIC expresion
+   96                  | expresion • OP_AND expresion
+   97                  | expresion • OP_COMP expresion
+   98                  | expresion • OP_ARIT expresion
+   99                  | expresion • OP_DECREMENT expresion
+  105 expresion_unaria: expresion • OP_INCREMENT
+  106                 | expresion • OP_DECREMENT
+
+    MAYOR_QUE     desplazar e ir al estado 104
+    OP_SUM_RES    desplazar e ir al estado 105
+    OP_MULT       desplazar e ir al estado 106
+    OP_ARIT       desplazar e ir al estado 107
+    OP_COMP       desplazar e ir al estado 108
+    OP_LOGIC      desplazar e ir al estado 109
+    OP_AND        desplazar e ir al estado 110
+    OP_INCREMENT  desplazar e ir al estado 111
+    OP_DECREMENT  desplazar e ir al estado 112
+
+    $default  reduce usando la regla 93 (expresion_binaria)
+
+
+Estado 146
+
+   91 expresion_binaria: expresion • OP_SUM_RES expresion
+   91                  | expresion OP_SUM_RES expresion •
+   92                  | expresion • OP_MULT expresion
+   93                  | expresion • MAYOR_QUE expresion
+   94                  | expresion • MENOR_QUE expresion
+   95                  | expresion • OP_LOGIC expresion
+   96                  | expresion • OP_AND expresion
+   97                  | expresion • OP_COMP expresion
+   98                  | expresion • OP_ARIT expresion
+   99                  | expresion • OP_DECREMENT expresion
+  105 expresion_unaria: expresion • OP_INCREMENT
+  106                 | expresion • OP_DECREMENT
+
+    OP_MULT       desplazar e ir al estado 106
+    OP_ARIT       desplazar e ir al estado 107
+    OP_COMP       desplazar e ir al estado 108
+    OP_LOGIC      desplazar e ir al estado 109
+    OP_AND        desplazar e ir al estado 110
+    OP_INCREMENT  desplazar e ir al estado 111
+    OP_DECREMENT  desplazar e ir al estado 112
+
+    $default  reduce usando la regla 91 (expresion_binaria)
+
+
+Estado 147
+
+   91 expresion_binaria: expresion • OP_SUM_RES expresion
+   92                  | expresion • OP_MULT expresion
+   92                  | expresion OP_MULT expresion •
+   93                  | expresion • MAYOR_QUE expresion
+   94                  | expresion • MENOR_QUE expresion
+   95                  | expresion • OP_LOGIC expresion
+   96                  | expresion • OP_AND expresion
+   97                  | expresion • OP_COMP expresion
+   98                  | expresion • OP_ARIT expresion
+   99                  | expresion • OP_DECREMENT expresion
+  105 expresion_unaria: expresion • OP_INCREMENT
+  106                 | expresion • OP_DECREMENT
+
+    OP_ARIT       desplazar e ir al estado 107
+    OP_COMP       desplazar e ir al estado 108
+    OP_LOGIC      desplazar e ir al estado 109
+    OP_AND        desplazar e ir al estado 110
+    OP_INCREMENT  desplazar e ir al estado 111
+    OP_DECREMENT  desplazar e ir al estado 112
+
+    $default  reduce usando la regla 92 (expresion_binaria)
+
+
+Estado 148
+
+   91 expresion_binaria: expresion • OP_SUM_RES expresion
+   92                  | expresion • OP_MULT expresion
+   93                  | expresion • MAYOR_QUE expresion
+   94                  | expresion • MENOR_QUE expresion
+   95                  | expresion • OP_LOGIC expresion
+   96                  | expresion • OP_AND expresion
+   97                  | expresion • OP_COMP expresion
+   98                  | expresion • OP_ARIT expresion
+   98                  | expresion OP_ARIT expresion •
+   99                  | expresion • OP_DECREMENT expresion
+  105 expresion_unaria: expresion • OP_INCREMENT
+  106                 | expresion • OP_DECREMENT
+
+    OP_COMP       desplazar e ir al estado 108
+    OP_LOGIC      desplazar e ir al estado 109
+    OP_AND        desplazar e ir al estado 110
+    OP_INCREMENT  desplazar e ir al estado 111
+    OP_DECREMENT  desplazar e ir al estado 112
+
+    $default  reduce usando la regla 98 (expresion_binaria)
+
+
+Estado 149
+
+   91 expresion_binaria: expresion • OP_SUM_RES expresion
+   92                  | expresion • OP_MULT expresion
+   93                  | expresion • MAYOR_QUE expresion
+   94                  | expresion • MENOR_QUE expresion
+   95                  | expresion • OP_LOGIC expresion
+   96                  | expresion • OP_AND expresion
+   97                  | expresion • OP_COMP expresion
+   97                  | expresion OP_COMP expresion •
+   98                  | expresion • OP_ARIT expresion
+   99                  | expresion • OP_DECREMENT expresion
+  105 expresion_unaria: expresion • OP_INCREMENT
+  106                 | expresion • OP_DECREMENT
+
+    OP_LOGIC      desplazar e ir al estado 109
+    OP_AND        desplazar e ir al estado 110
+    OP_INCREMENT  desplazar e ir al estado 111
+    OP_DECREMENT  desplazar e ir al estado 112
+
+    $default  reduce usando la regla 97 (expresion_binaria)
+
+
+Estado 150
+
+   91 expresion_binaria: expresion • OP_SUM_RES expresion
+   92                  | expresion • OP_MULT expresion
+   93                  | expresion • MAYOR_QUE expresion
+   94                  | expresion • MENOR_QUE expresion
+   95                  | expresion • OP_LOGIC expresion
+   95                  | expresion OP_LOGIC expresion •
+   96                  | expresion • OP_AND expresion
+   97                  | expresion • OP_COMP expresion
+   98                  | expresion • OP_ARIT expresion
+   99                  | expresion • OP_DECREMENT expresion
+  105 expresion_unaria: expresion • OP_INCREMENT
+  106                 | expresion • OP_DECREMENT
+
+    OP_AND        desplazar e ir al estado 110
+    OP_INCREMENT  desplazar e ir al estado 111
+    OP_DECREMENT  desplazar e ir al estado 112
+
+    $default  reduce usando la regla 95 (expresion_binaria)
+
+
+Estado 151
+
+   91 expresion_binaria: expresion • OP_SUM_RES expresion
+   92                  | expresion • OP_MULT expresion
+   93                  | expresion • MAYOR_QUE expresion
+   94                  | expresion • MENOR_QUE expresion
+   95                  | expresion • OP_LOGIC expresion
+   96                  | expresion • OP_AND expresion
+   96                  | expresion OP_AND expresion •
+   97                  | expresion • OP_COMP expresion
+   98                  | expresion • OP_ARIT expresion
+   99                  | expresion • OP_DECREMENT expresion
+  105 expresion_unaria: expresion • OP_INCREMENT
+  106                 | expresion • OP_DECREMENT
+
+    OP_INCREMENT  desplazar e ir al estado 111
+    OP_DECREMENT  desplazar e ir al estado 112
+
+    $default  reduce usando la regla 96 (expresion_binaria)
+
+
+Estado 152
+
+   91 expresion_binaria: expresion • OP_SUM_RES expresion
+   92                  | expresion • OP_MULT expresion
+   93                  | expresion • MAYOR_QUE expresion
+   94                  | expresion • MENOR_QUE expresion
+   95                  | expresion • OP_LOGIC expresion
+   96                  | expresion • OP_AND expresion
+   97                  | expresion • OP_COMP expresion
+   98                  | expresion • OP_ARIT expresion
+   99                  | expresion • OP_DECREMENT expresion
+   99                  | expresion OP_DECREMENT expresion •
+  105 expresion_unaria: expresion • OP_INCREMENT
+  106                 | expresion • OP_DECREMENT
+
+    $default  reduce usando la regla 99 (expresion_binaria)
+
+
+Estado 153
+
+   55 sentencia_while: WHILE PAR_IZQ lista_expresiones_o_cadena PAR_DER • bloque
+
+    LLAVE_IZQ  desplazar e ir al estado 4
+
+    bloque  ir al estado 175
+
+
+Estado 154
+
+   56 sentencia_while: WHILE PAR_IZQ lista_expresiones_o_cadena bloque •
+
+    $default  reduce usando la regla 56 (sentencia_while)
+
+
+Estado 155
+
+   73 sentencia_repeat_until: REPEAT bloque UNTIL PAR_IZQ • expresion PAR_DER PYC
+   74                       | REPEAT bloque UNTIL PAR_IZQ • expresion PAR_DER error
+
+    ID            desplazar e ir al estado 47
+    CADENA        desplazar e ir al estado 48
+    BOOL_VALUE    desplazar e ir al estado 50
+    LETRA         desplazar e ir al estado 51
+    NUMERO        desplazar e ir al estado 52
+    PAR_IZQ       desplazar e ir al estado 53
+    OP_SUM_RES    desplazar e ir al estado 54
+    OP_MULT       desplazar e ir al estado 55
+    OP_R          desplazar e ir al estado 56
+    OP_INCREMENT  desplazar e ir al estado 57
+    OP_DECREMENT  desplazar e ir al estado 58
+
+    llamada_subprog    ir al estado 59
+    expresion          ir al estado 176
+    expresion_binaria  ir al estado 61
+    expresion_unaria   ir al estado 62
+    constante          ir al estado 63
+
+
+Estado 156
+
+  108 tipo_dato: LISTA MENOR_QUE tipo_dato MAYOR_QUE •
+
+    $default  reduce usando la regla 108 (tipo_dato)
+
+
+Estado 157
+
+    5 bloque: LLAVE_IZQ Declaracion Sentencias Declaracion LLAVE_DER •
+
+    $default  reduce usando la regla 5 (bloque)
+
+
+Estado 158
+
+   26 Parametros: ID • error
+
+    error  desplazar e ir al estado 177
+
+
+Estado 159
+
+   18 declarar_funcion: tipo_dato ID PAR_IZQ PAR_DER • bloque
+
+    LLAVE_IZQ  desplazar e ir al estado 4
+
+    bloque  ir al estado 178
+
+
+Estado 160
+
+   17 declarar_funcion: tipo_dato ID PAR_IZQ Parametros • PAR_DER bloque
+   24 Parametros: Parametros • COMA tipo_dato ID
+   25           | Parametros • COMA tipo_dato ID OP_ASIGNACION expresion
+   27           | Parametros • tipo_dato error
+
+    COMA       desplazar e ir al estado 179
+    TIPO_DATO  desplazar e ir al estado 16
+    LISTA      desplazar e ir al estado 17
+    PAR_DER    desplazar e ir al estado 180
+
+    tipo_dato  ir al estado 181
+
+
+Estado 161
+
+   22 Parametros: tipo_dato • ID
+   23           | tipo_dato • ID OP_ASIGNACION expresion
+   28           | tipo_dato • error
+
+    error  desplazar e ir al estado 182
+    ID     desplazar e ir al estado 183
+
+
+Estado 162
+
+   58 sentencia_entrada: INPUT PAR_IZQ COMILLAS lista_expresiones_o_cadena COMILLAS • COMA lista_ID PAR_DER PYC
+   60                  | INPUT PAR_IZQ COMILLAS lista_expresiones_o_cadena COMILLAS • COMA lista_ID PAR_DER error
+   61                  | INPUT PAR_IZQ COMILLAS lista_expresiones_o_cadena COMILLAS • lista_ID PAR_DER PYC
+
+    ID    desplazar e ir al estado 37
+    COMA  desplazar e ir al estado 184
+
+    lista_ID  ir al estado 185
+
+
+Estado 163
+
+   62 sentencia_entrada: INPUT PAR_IZQ COMILLAS lista_expresiones_o_cadena PAR_DER •
+
+    $default  reduce usando la regla 62 (sentencia_entrada)
+
+
+Estado 164
+
+   83 lista_expresiones_o_cadena: lista_expresiones_o_cadena COMA expresion •
+   91 expresion_binaria: expresion • OP_SUM_RES expresion
+   92                  | expresion • OP_MULT expresion
+   93                  | expresion • MAYOR_QUE expresion
+   94                  | expresion • MENOR_QUE expresion
+   95                  | expresion • OP_LOGIC expresion
+   96                  | expresion • OP_AND expresion
+   97                  | expresion • OP_COMP expresion
+   98                  | expresion • OP_ARIT expresion
+   99                  | expresion • OP_DECREMENT expresion
+  105 expresion_unaria: expresion • OP_INCREMENT
+  106                 | expresion • OP_DECREMENT
+
+    MENOR_QUE     desplazar e ir al estado 103
+    MAYOR_QUE     desplazar e ir al estado 104
+    OP_SUM_RES    desplazar e ir al estado 105
+    OP_MULT       desplazar e ir al estado 106
+    OP_ARIT       desplazar e ir al estado 107
+    OP_COMP       desplazar e ir al estado 108
+    OP_LOGIC      desplazar e ir al estado 109
+    OP_AND        desplazar e ir al estado 110
+    OP_INCREMENT  desplazar e ir al estado 111
+    OP_DECREMENT  desplazar e ir al estado 112
+
+    $default  reduce usando la regla 83 (lista_expresiones_o_cadena)
+
+
+Estado 165
+
+   57 sentencia_entrada: INPUT PAR_IZQ lista_expresiones_o_cadena PAR_DER PYC •
+
+    $default  reduce usando la regla 57 (sentencia_entrada)
+
+
+Estado 166
+
+   64 sentencia_salida: OUTPUT PAR_IZQ COMILLAS lista_expresiones_o_cadena COMILLAS • PAR_DER PYC
+   65                 | OUTPUT PAR_IZQ COMILLAS lista_expresiones_o_cadena COMILLAS • COMA lista_ID PAR_DER PYC
+   67                 | OUTPUT PAR_IZQ COMILLAS lista_expresiones_o_cadena COMILLAS • PAR_DER error
+   69                 | OUTPUT PAR_IZQ COMILLAS lista_expresiones_o_cadena COMILLAS • COMA lista_ID PAR_DER error
+   70                 | OUTPUT PAR_IZQ COMILLAS lista_expresiones_o_cadena COMILLAS • lista_ID PAR_DER PYC
+
+    ID       desplazar e ir al estado 37
+    COMA     desplazar e ir al estado 186
+    PAR_DER  desplazar e ir al estado 187
+
+    lista_ID  ir al estado 188
+
+
+Estado 167
+
+   68 sentencia_salida: OUTPUT PAR_IZQ COMILLAS lista_expresiones_o_cadena PAR_DER •
+
+    $default  reduce usando la regla 68 (sentencia_salida)
+
+
+Estado 168
+
+   66 sentencia_salida: OUTPUT PAR_IZQ lista_expresiones_o_cadena PAR_DER error •
+
+    $default  reduce usando la regla 66 (sentencia_salida)
+
+
+Estado 169
+
+   63 sentencia_salida: OUTPUT PAR_IZQ lista_expresiones_o_cadena PAR_DER PYC •
+
+    $default  reduce usando la regla 63 (sentencia_salida)
+
+
+Estado 170
+
+   46 sentencia_asignacion: ID OP_ASIGNACION COR_IZQ lista_expresiones_o_cadena COR_DER • PYC
+
+    PYC  desplazar e ir al estado 189
+
+
+Estado 171
+
+   80 sentencia_lista_aniadir_en: ID OP_ACCESO expresion OP_INCREMENT expresion • PYC
+   91 expresion_binaria: expresion • OP_SUM_RES expresion
+   92                  | expresion • OP_MULT expresion
+   93                  | expresion • MAYOR_QUE expresion
+   94                  | expresion • MENOR_QUE expresion
+   95                  | expresion • OP_LOGIC expresion
+   96                  | expresion • OP_AND expresion
+   97                  | expresion • OP_COMP expresion
+   98                  | expresion • OP_ARIT expresion
+   99                  | expresion • OP_DECREMENT expresion
+  105 expresion_unaria: expresion • OP_INCREMENT
+  106                 | expresion • OP_DECREMENT
+
+    PYC           desplazar e ir al estado 190
+    MENOR_QUE     desplazar e ir al estado 103
+    MAYOR_QUE     desplazar e ir al estado 104
+    OP_SUM_RES    desplazar e ir al estado 105
+    OP_MULT       desplazar e ir al estado 106
+    OP_ARIT       desplazar e ir al estado 107
+    OP_COMP       desplazar e ir al estado 108
+    OP_LOGIC      desplazar e ir al estado 109
+    OP_AND        desplazar e ir al estado 110
+    OP_INCREMENT  desplazar e ir al estado 111
+    OP_DECREMENT  desplazar e ir al estado 112
+
+
+Estado 172
+
+   48 sentencia_if: IF PAR_IZQ expresion PAR_DER bloque • sentencia_else_if
+
+    ELSE  desplazar e ir al estado 191
+
+    $default  reduce usando la regla 54 (sentencia_else)
+
+    sentencia_else_if  ir al estado 192
+    sentencia_else     ir al estado 193
+
+
+Estado 173
+
+   44 llamada_subprog: ID PAR_IZQ lista_expresiones_o_cadena error •
+
+    $default  reduce usando la regla 44 (llamada_subprog)
+
+
+Estado 174
+
+   42 llamada_subprog: ID PAR_IZQ lista_expresiones_o_cadena PAR_DER •
+
+    $default  reduce usando la regla 42 (llamada_subprog)
+
+
+Estado 175
+
+   55 sentencia_while: WHILE PAR_IZQ lista_expresiones_o_cadena PAR_DER bloque •
+
+    $default  reduce usando la regla 55 (sentencia_while)
+
+
+Estado 176
+
+   73 sentencia_repeat_until: REPEAT bloque UNTIL PAR_IZQ expresion • PAR_DER PYC
+   74                       | REPEAT bloque UNTIL PAR_IZQ expresion • PAR_DER error
+   91 expresion_binaria: expresion • OP_SUM_RES expresion
+   92                  | expresion • OP_MULT expresion
+   93                  | expresion • MAYOR_QUE expresion
+   94                  | expresion • MENOR_QUE expresion
+   95                  | expresion • OP_LOGIC expresion
+   96                  | expresion • OP_AND expresion
+   97                  | expresion • OP_COMP expresion
+   98                  | expresion • OP_ARIT expresion
+   99                  | expresion • OP_DECREMENT expresion
+  105 expresion_unaria: expresion • OP_INCREMENT
+  106                 | expresion • OP_DECREMENT
+
+    MENOR_QUE     desplazar e ir al estado 103
+    PAR_DER       desplazar e ir al estado 194
+    MAYOR_QUE     desplazar e ir al estado 104
+    OP_SUM_RES    desplazar e ir al estado 105
+    OP_MULT       desplazar e ir al estado 106
+    OP_ARIT       desplazar e ir al estado 107
+    OP_COMP       desplazar e ir al estado 108
+    OP_LOGIC      desplazar e ir al estado 109
+    OP_AND        desplazar e ir al estado 110
+    OP_INCREMENT  desplazar e ir al estado 111
+    OP_DECREMENT  desplazar e ir al estado 112
+
+
+Estado 177
+
+   26 Parametros: ID error •
+
+    $default  reduce usando la regla 26 (Parametros)
+
+
+Estado 178
+
+   18 declarar_funcion: tipo_dato ID PAR_IZQ PAR_DER bloque •
+
+    $default  reduce usando la regla 18 (declarar_funcion)
+
+
+Estado 179
+
+   24 Parametros: Parametros COMA • tipo_dato ID
+   25           | Parametros COMA • tipo_dato ID OP_ASIGNACION expresion
+
+    TIPO_DATO  desplazar e ir al estado 16
+    LISTA      desplazar e ir al estado 17
+
+    tipo_dato  ir al estado 195
+
+
+Estado 180
+
+   17 declarar_funcion: tipo_dato ID PAR_IZQ Parametros PAR_DER • bloque
+
+    LLAVE_IZQ  desplazar e ir al estado 4
+
+    bloque  ir al estado 196
+
+
+Estado 181
+
+   27 Parametros: Parametros tipo_dato • error
+
+    error  desplazar e ir al estado 197
+
+
+Estado 182
+
+   28 Parametros: tipo_dato error •
+
+    $default  reduce usando la regla 28 (Parametros)
+
+
+Estado 183
+
+   22 Parametros: tipo_dato ID •
+   23           | tipo_dato ID • OP_ASIGNACION expresion
+
+    OP_ASIGNACION  desplazar e ir al estado 198
+
+    $default  reduce usando la regla 22 (Parametros)
+
+
+Estado 184
+
+   58 sentencia_entrada: INPUT PAR_IZQ COMILLAS lista_expresiones_o_cadena COMILLAS COMA • lista_ID PAR_DER PYC
+   60                  | INPUT PAR_IZQ COMILLAS lista_expresiones_o_cadena COMILLAS COMA • lista_ID PAR_DER error
+
+    ID  desplazar e ir al estado 37
+
+    lista_ID  ir al estado 199
+
+
+Estado 185
+
+   20 lista_ID: lista_ID • COMA ID
+   21         | lista_ID • ID error
+   61 sentencia_entrada: INPUT PAR_IZQ COMILLAS lista_expresiones_o_cadena COMILLAS lista_ID • PAR_DER PYC
+
+    ID       desplazar e ir al estado 78
+    COMA     desplazar e ir al estado 80
+    PAR_DER  desplazar e ir al estado 200
+
+
+Estado 186
+
+   65 sentencia_salida: OUTPUT PAR_IZQ COMILLAS lista_expresiones_o_cadena COMILLAS COMA • lista_ID PAR_DER PYC
+   69                 | OUTPUT PAR_IZQ COMILLAS lista_expresiones_o_cadena COMILLAS COMA • lista_ID PAR_DER error
+
+    ID  desplazar e ir al estado 37
+
+    lista_ID  ir al estado 201
+
+
+Estado 187
+
+   64 sentencia_salida: OUTPUT PAR_IZQ COMILLAS lista_expresiones_o_cadena COMILLAS PAR_DER • PYC
+   67                 | OUTPUT PAR_IZQ COMILLAS lista_expresiones_o_cadena COMILLAS PAR_DER • error
+
+    error  desplazar e ir al estado 202
+    PYC    desplazar e ir al estado 203
+
+
+Estado 188
+
+   20 lista_ID: lista_ID • COMA ID
+   21         | lista_ID • ID error
+   70 sentencia_salida: OUTPUT PAR_IZQ COMILLAS lista_expresiones_o_cadena COMILLAS lista_ID • PAR_DER PYC
+
+    ID       desplazar e ir al estado 78
+    COMA     desplazar e ir al estado 80
+    PAR_DER  desplazar e ir al estado 204
+
+
+Estado 189
+
+   46 sentencia_asignacion: ID OP_ASIGNACION COR_IZQ lista_expresiones_o_cadena COR_DER PYC •
+
+    $default  reduce usando la regla 46 (sentencia_asignacion)
+
+
+Estado 190
+
+   80 sentencia_lista_aniadir_en: ID OP_ACCESO expresion OP_INCREMENT expresion PYC •
+
+    $default  reduce usando la regla 80 (sentencia_lista_aniadir_en)
+
+
+Estado 191
+
+   50 sentencia_else_if: ELSE • IF PAR_IZQ expresion PAR_DER bloque sentencia_else_if
+   52                  | ELSE • IF PAR_IZQ expresion bloque
+   53 sentencia_else: ELSE • bloque
+
+    IF         desplazar e ir al estado 205
+    LLAVE_IZQ  desplazar e ir al estado 4
+
+    bloque  ir al estado 206
+
+
+Estado 192
+
+   48 sentencia_if: IF PAR_IZQ expresion PAR_DER bloque sentencia_else_if •
+
+    $default  reduce usando la regla 48 (sentencia_if)
+
+
+Estado 193
+
+   51 sentencia_else_if: sentencia_else •
+
+    $default  reduce usando la regla 51 (sentencia_else_if)
+
+
+Estado 194
+
+   73 sentencia_repeat_until: REPEAT bloque UNTIL PAR_IZQ expresion PAR_DER • PYC
+   74                       | REPEAT bloque UNTIL PAR_IZQ expresion PAR_DER • error
+
+    error  desplazar e ir al estado 207
+    PYC    desplazar e ir al estado 208
+
+
+Estado 195
+
+   24 Parametros: Parametros COMA tipo_dato • ID
+   25           | Parametros COMA tipo_dato • ID OP_ASIGNACION expresion
+
+    ID  desplazar e ir al estado 209
+
+
+Estado 196
+
+   17 declarar_funcion: tipo_dato ID PAR_IZQ Parametros PAR_DER bloque •
+
+    $default  reduce usando la regla 17 (declarar_funcion)
+
+
+Estado 197
+
+   27 Parametros: Parametros tipo_dato error •
+
+    $default  reduce usando la regla 27 (Parametros)
+
+
+Estado 198
+
+   23 Parametros: tipo_dato ID OP_ASIGNACION • expresion
+
+    ID            desplazar e ir al estado 47
+    CADENA        desplazar e ir al estado 48
+    BOOL_VALUE    desplazar e ir al estado 50
+    LETRA         desplazar e ir al estado 51
+    NUMERO        desplazar e ir al estado 52
+    PAR_IZQ       desplazar e ir al estado 53
+    OP_SUM_RES    desplazar e ir al estado 54
+    OP_MULT       desplazar e ir al estado 55
+    OP_R          desplazar e ir al estado 56
+    OP_INCREMENT  desplazar e ir al estado 57
+    OP_DECREMENT  desplazar e ir al estado 58
+
+    llamada_subprog    ir al estado 59
+    expresion          ir al estado 210
+    expresion_binaria  ir al estado 61
+    expresion_unaria   ir al estado 62
+    constante          ir al estado 63
+
+
+Estado 199
+
+   20 lista_ID: lista_ID • COMA ID
+   21         | lista_ID • ID error
+   58 sentencia_entrada: INPUT PAR_IZQ COMILLAS lista_expresiones_o_cadena COMILLAS COMA lista_ID • PAR_DER PYC
+   60                  | INPUT PAR_IZQ COMILLAS lista_expresiones_o_cadena COMILLAS COMA lista_ID • PAR_DER error
+
+    ID       desplazar e ir al estado 78
+    COMA     desplazar e ir al estado 80
+    PAR_DER  desplazar e ir al estado 211
+
+
+Estado 200
+
+   61 sentencia_entrada: INPUT PAR_IZQ COMILLAS lista_expresiones_o_cadena COMILLAS lista_ID PAR_DER • PYC
+
+    PYC  desplazar e ir al estado 212
+
+
+Estado 201
+
+   20 lista_ID: lista_ID • COMA ID
+   21         | lista_ID • ID error
+   65 sentencia_salida: OUTPUT PAR_IZQ COMILLAS lista_expresiones_o_cadena COMILLAS COMA lista_ID • PAR_DER PYC
+   69                 | OUTPUT PAR_IZQ COMILLAS lista_expresiones_o_cadena COMILLAS COMA lista_ID • PAR_DER error
+
+    ID       desplazar e ir al estado 78
+    COMA     desplazar e ir al estado 80
+    PAR_DER  desplazar e ir al estado 213
+
+
+Estado 202
+
+   67 sentencia_salida: OUTPUT PAR_IZQ COMILLAS lista_expresiones_o_cadena COMILLAS PAR_DER error •
+
+    $default  reduce usando la regla 67 (sentencia_salida)
+
+
+Estado 203
+
+   64 sentencia_salida: OUTPUT PAR_IZQ COMILLAS lista_expresiones_o_cadena COMILLAS PAR_DER PYC •
+
+    $default  reduce usando la regla 64 (sentencia_salida)
+
+
+Estado 204
+
+   70 sentencia_salida: OUTPUT PAR_IZQ COMILLAS lista_expresiones_o_cadena COMILLAS lista_ID PAR_DER • PYC
+
+    PYC  desplazar e ir al estado 214
+
+
+Estado 205
+
+   50 sentencia_else_if: ELSE IF • PAR_IZQ expresion PAR_DER bloque sentencia_else_if
+   52                  | ELSE IF • PAR_IZQ expresion bloque
+
+    PAR_IZQ  desplazar e ir al estado 215
+
+
+Estado 206
+
+   53 sentencia_else: ELSE bloque •
+
+    $default  reduce usando la regla 53 (sentencia_else)
+
+
+Estado 207
+
+   74 sentencia_repeat_until: REPEAT bloque UNTIL PAR_IZQ expresion PAR_DER error •
+
+    $default  reduce usando la regla 74 (sentencia_repeat_until)
+
+
+Estado 208
+
+   73 sentencia_repeat_until: REPEAT bloque UNTIL PAR_IZQ expresion PAR_DER PYC •
+
+    $default  reduce usando la regla 73 (sentencia_repeat_until)
+
+
+Estado 209
+
+   24 Parametros: Parametros COMA tipo_dato ID •
+   25           | Parametros COMA tipo_dato ID • OP_ASIGNACION expresion
+
+    OP_ASIGNACION  desplazar e ir al estado 216
+
+    $default  reduce usando la regla 24 (Parametros)
+
+
+Estado 210
+
+   23 Parametros: tipo_dato ID OP_ASIGNACION expresion •
+   91 expresion_binaria: expresion • OP_SUM_RES expresion
+   92                  | expresion • OP_MULT expresion
+   93                  | expresion • MAYOR_QUE expresion
+   94                  | expresion • MENOR_QUE expresion
+   95                  | expresion • OP_LOGIC expresion
+   96                  | expresion • OP_AND expresion
+   97                  | expresion • OP_COMP expresion
+   98                  | expresion • OP_ARIT expresion
+   99                  | expresion • OP_DECREMENT expresion
+  105 expresion_unaria: expresion • OP_INCREMENT
+  106                 | expresion • OP_DECREMENT
+
+    MENOR_QUE     desplazar e ir al estado 103
+    MAYOR_QUE     desplazar e ir al estado 104
+    OP_SUM_RES    desplazar e ir al estado 105
+    OP_MULT       desplazar e ir al estado 106
+    OP_ARIT       desplazar e ir al estado 107
+    OP_COMP       desplazar e ir al estado 108
+    OP_LOGIC      desplazar e ir al estado 109
+    OP_AND        desplazar e ir al estado 110
+    OP_INCREMENT  desplazar e ir al estado 111
+    OP_DECREMENT  desplazar e ir al estado 112
+
+    $default  reduce usando la regla 23 (Parametros)
+
+
+Estado 211
+
+   58 sentencia_entrada: INPUT PAR_IZQ COMILLAS lista_expresiones_o_cadena COMILLAS COMA lista_ID PAR_DER • PYC
+   60                  | INPUT PAR_IZQ COMILLAS lista_expresiones_o_cadena COMILLAS COMA lista_ID PAR_DER • error
+
+    error  desplazar e ir al estado 217
+    PYC    desplazar e ir al estado 218
+
+
+Estado 212
+
+   61 sentencia_entrada: INPUT PAR_IZQ COMILLAS lista_expresiones_o_cadena COMILLAS lista_ID PAR_DER PYC •
+
+    $default  reduce usando la regla 61 (sentencia_entrada)
+
+
+Estado 213
+
+   65 sentencia_salida: OUTPUT PAR_IZQ COMILLAS lista_expresiones_o_cadena COMILLAS COMA lista_ID PAR_DER • PYC
+   69                 | OUTPUT PAR_IZQ COMILLAS lista_expresiones_o_cadena COMILLAS COMA lista_ID PAR_DER • error
+
+    error  desplazar e ir al estado 219
+    PYC    desplazar e ir al estado 220
+
+
+Estado 214
+
+   70 sentencia_salida: OUTPUT PAR_IZQ COMILLAS lista_expresiones_o_cadena COMILLAS lista_ID PAR_DER PYC •
+
+    $default  reduce usando la regla 70 (sentencia_salida)
+
+
+Estado 215
+
+   50 sentencia_else_if: ELSE IF PAR_IZQ • expresion PAR_DER bloque sentencia_else_if
+   52                  | ELSE IF PAR_IZQ • expresion bloque
+
+    ID            desplazar e ir al estado 47
+    CADENA        desplazar e ir al estado 48
+    BOOL_VALUE    desplazar e ir al estado 50
+    LETRA         desplazar e ir al estado 51
+    NUMERO        desplazar e ir al estado 52
+    PAR_IZQ       desplazar e ir al estado 53
+    OP_SUM_RES    desplazar e ir al estado 54
+    OP_MULT       desplazar e ir al estado 55
+    OP_R          desplazar e ir al estado 56
+    OP_INCREMENT  desplazar e ir al estado 57
+    OP_DECREMENT  desplazar e ir al estado 58
+
+    llamada_subprog    ir al estado 59
+    expresion          ir al estado 221
+    expresion_binaria  ir al estado 61
+    expresion_unaria   ir al estado 62
+    constante          ir al estado 63
+
+
+Estado 216
+
+   25 Parametros: Parametros COMA tipo_dato ID OP_ASIGNACION • expresion
+
+    ID            desplazar e ir al estado 47
+    CADENA        desplazar e ir al estado 48
+    BOOL_VALUE    desplazar e ir al estado 50
+    LETRA         desplazar e ir al estado 51
+    NUMERO        desplazar e ir al estado 52
+    PAR_IZQ       desplazar e ir al estado 53
+    OP_SUM_RES    desplazar e ir al estado 54
+    OP_MULT       desplazar e ir al estado 55
+    OP_R          desplazar e ir al estado 56
+    OP_INCREMENT  desplazar e ir al estado 57
+    OP_DECREMENT  desplazar e ir al estado 58
+
+    llamada_subprog    ir al estado 59
+    expresion          ir al estado 222
+    expresion_binaria  ir al estado 61
+    expresion_unaria   ir al estado 62
+    constante          ir al estado 63
+
+
+Estado 217
+
+   60 sentencia_entrada: INPUT PAR_IZQ COMILLAS lista_expresiones_o_cadena COMILLAS COMA lista_ID PAR_DER error •
+
+    $default  reduce usando la regla 60 (sentencia_entrada)
+
+
+Estado 218
+
+   58 sentencia_entrada: INPUT PAR_IZQ COMILLAS lista_expresiones_o_cadena COMILLAS COMA lista_ID PAR_DER PYC •
+
+    $default  reduce usando la regla 58 (sentencia_entrada)
+
+
+Estado 219
+
+   69 sentencia_salida: OUTPUT PAR_IZQ COMILLAS lista_expresiones_o_cadena COMILLAS COMA lista_ID PAR_DER error •
+
+    $default  reduce usando la regla 69 (sentencia_salida)
+
+
+Estado 220
+
+   65 sentencia_salida: OUTPUT PAR_IZQ COMILLAS lista_expresiones_o_cadena COMILLAS COMA lista_ID PAR_DER PYC •
+
+    $default  reduce usando la regla 65 (sentencia_salida)
+
+
+Estado 221
+
+   50 sentencia_else_if: ELSE IF PAR_IZQ expresion • PAR_DER bloque sentencia_else_if
+   52                  | ELSE IF PAR_IZQ expresion • bloque
+   91 expresion_binaria: expresion • OP_SUM_RES expresion
+   92                  | expresion • OP_MULT expresion
+   93                  | expresion • MAYOR_QUE expresion
+   94                  | expresion • MENOR_QUE expresion
+   95                  | expresion • OP_LOGIC expresion
+   96                  | expresion • OP_AND expresion
+   97                  | expresion • OP_COMP expresion
+   98                  | expresion • OP_ARIT expresion
+   99                  | expresion • OP_DECREMENT expresion
+  105 expresion_unaria: expresion • OP_INCREMENT
+  106                 | expresion • OP_DECREMENT
+
+    LLAVE_IZQ     desplazar e ir al estado 4
+    MENOR_QUE     desplazar e ir al estado 103
+    PAR_DER       desplazar e ir al estado 223
+    MAYOR_QUE     desplazar e ir al estado 104
+    OP_SUM_RES    desplazar e ir al estado 105
+    OP_MULT       desplazar e ir al estado 106
+    OP_ARIT       desplazar e ir al estado 107
+    OP_COMP       desplazar e ir al estado 108
+    OP_LOGIC      desplazar e ir al estado 109
+    OP_AND        desplazar e ir al estado 110
+    OP_INCREMENT  desplazar e ir al estado 111
+    OP_DECREMENT  desplazar e ir al estado 112
+
+    bloque  ir al estado 224
+
+
+Estado 222
+
+   25 Parametros: Parametros COMA tipo_dato ID OP_ASIGNACION expresion •
+   91 expresion_binaria: expresion • OP_SUM_RES expresion
+   92                  | expresion • OP_MULT expresion
+   93                  | expresion • MAYOR_QUE expresion
+   94                  | expresion • MENOR_QUE expresion
+   95                  | expresion • OP_LOGIC expresion
+   96                  | expresion • OP_AND expresion
+   97                  | expresion • OP_COMP expresion
+   98                  | expresion • OP_ARIT expresion
+   99                  | expresion • OP_DECREMENT expresion
+  105 expresion_unaria: expresion • OP_INCREMENT
+  106                 | expresion • OP_DECREMENT
+
+    MENOR_QUE     desplazar e ir al estado 103
+    MAYOR_QUE     desplazar e ir al estado 104
+    OP_SUM_RES    desplazar e ir al estado 105
+    OP_MULT       desplazar e ir al estado 106
+    OP_ARIT       desplazar e ir al estado 107
+    OP_COMP       desplazar e ir al estado 108
+    OP_LOGIC      desplazar e ir al estado 109
+    OP_AND        desplazar e ir al estado 110
+    OP_INCREMENT  desplazar e ir al estado 111
+    OP_DECREMENT  desplazar e ir al estado 112
+
+    $default  reduce usando la regla 25 (Parametros)
+
+
+Estado 223
+
+   50 sentencia_else_if: ELSE IF PAR_IZQ expresion PAR_DER • bloque sentencia_else_if
+
+    LLAVE_IZQ  desplazar e ir al estado 4
+
+    bloque  ir al estado 225
+
+
+Estado 224
+
+   52 sentencia_else_if: ELSE IF PAR_IZQ expresion bloque •
+
+    $default  reduce usando la regla 52 (sentencia_else_if)
+
+
+Estado 225
+
+   50 sentencia_else_if: ELSE IF PAR_IZQ expresion PAR_DER bloque • sentencia_else_if
+
+    ELSE  desplazar e ir al estado 191
+
+    $default  reduce usando la regla 54 (sentencia_else)
+
+    sentencia_else_if  ir al estado 226
+    sentencia_else     ir al estado 193
+
+
+Estado 226
+
+   50 sentencia_else_if: ELSE IF PAR_IZQ expresion PAR_DER bloque sentencia_else_if •
+
+    $default  reduce usando la regla 50 (sentencia_else_if)

@@ -1,0 +1,33 @@
+program ejemplo_programa {
+    int numero = 10;
+    float valor = 5.5f;
+    char letra = "a"; 
+    bool es_valido = TRUE;
+    list<int> numeros;
+
+    // Entrada
+    scanf(numero);
+
+    // Estructura de control if-else
+    if (numero > 5) {
+        printf(numero);
+    } else {
+        printf("Numero menor o igual a 5");
+    }
+
+    numeros>>;
+
+    // Ciclo while
+    while (numero > 0) {
+        numero = numero--;
+    }
+
+    // Ciclo repeat-until
+    repeat {
+        numero = numero++;
+    } until (numero == 10);
+
+    // Retorno
+    return;
+
+}

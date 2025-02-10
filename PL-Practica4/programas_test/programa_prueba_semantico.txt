@@ -1,0 +1,84 @@
+program programa_guion {
+    ini_var_local
+    int ve; 
+    int ve1, ve2;
+    float vf;
+    char vc;
+    bool vl;
+
+
+    list < float > decimales; // Declara una lista de flotantes
+    fin_var_local
+
+    decimales = [0.1f, 0.2f, 0.3f];
+    float elemento_actual_decimales = ? decimales; // Elemento actual de decimales
+
+    int funcionA (int a1, int a2)
+    {
+        ini_var_local
+        int x1, x2;
+        fin_var_local
+
+        int funcionB(int i)
+        {
+            ini_var_local
+            int y1;
+            fin_var_local
+            
+            ve1 = x1;
+
+            return y1;
+        }
+
+        x1 = a1;
+        x2 = a2;
+
+        vf = 1.0f;
+
+        x1 = funcionB(x1);
+        return x1 ;
+    }
+
+    {
+        ini_var_local
+        int y2 , y3;
+        float y4;
+        fin_var_local
+
+        int funcionC(int ent)
+        {
+            ini_var_local
+            int y1;
+            fin_var_local
+
+            y1 = y1;
+            return y1;
+        }
+
+        //(0.5)
+        y2 = funcionC(1);//Llamada a funcion con numero y tipo de los argumentos erroneos
+
+        //Error de tipo en expresiones lógicas y aritméticas. (0.2)
+        {
+            ini_var_local
+            bool b2 , b3;
+            int i1;
+            fin_var_local
+
+            int funcionD(int ent)
+            {
+                ini_var_local
+                float f4;
+                fin_var_local
+
+                b2 = FALSE;
+                b3 = !b2;
+                b3 = (b3 != b2); 
+            }
+
+            i1 = funcionD(i1);
+
+        }
+    }
+
+}

@@ -1,0 +1,41 @@
+// Programa de prueba para verificar las nuevas sentencias y operadores de listas
+program programa_prueba_listas2 {
+    // Declaración de listas
+    list < int > numeros;    // Declara una lista de enteros
+    list < float > decimales; // Declara una lista de flotantes
+    list < int > otros_numeros = [6, 7, 8];
+
+    // Operadores de elementos en listas
+    int tercer_elemento = numeros@2; // Obtener el tercer elemento (posición 2) de la lista
+    numeros = numeros@1 ++7; // Añadir 7 en la posición 1 de la lista de números
+    numeros = numeros -2; // Borrar el elemento en la posición 2 de la lista de números
+    numeros = numeros%3; // Borrar elementos a partir de la posición 3 de la lista de números
+
+
+    // Comprobaciones de errores
+    numeros = [1, 2, 3, 4, 5];
+
+    // Inicialización de listas
+    numeros = [1, 2, 3, 4, 5];
+    decimales = [0.1f, 0.2f, 0.3f];
+
+    // Concatenar listas
+    numeros = numeros ** otros_numeros; // Concatenar otros_numeros a numeros
+
+    // Avanzar y retroceder en la lista
+    avanzar >> numeros; // Avanza el cursor en la lista de números
+    retroceder << numeros; // Retrocede el cursor en la lista de números
+
+    // Llevar el cursor al comienzo
+    cursor_al_comienzo $ numeros; // Lleva el cursor al comienzo de la lista de números
+
+    // Usando operadores en listas
+    int longitud_numeros = # numeros; // Longitud de la lista de números
+    float elemento_actual_decimales = ? decimales; // Elemento actual de decimales
+
+    // Realizar operaciones con listas
+    float suma_resultado = numeros + 10; // Sumar 10 a cada elemento de la lista
+    float resta_resultado = numeros - 1.5; // Restar 1.5 a cada elemento de la lista
+    float producto_resultado = numeros * 2; // Multiplicar cada elemento por 2
+    float division_resultado = numeros / 2; // Dividir cada elemento entre 2
+}

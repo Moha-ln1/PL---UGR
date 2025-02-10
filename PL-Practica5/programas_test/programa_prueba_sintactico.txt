@@ -1,0 +1,54 @@
+program programa {
+    //Apartado de declaraciones
+    
+    int x;
+    list <int> numeros;
+
+    int func1(){}
+
+    int x = 7;
+    list <int> numeros = [1,2,3];
+
+    int y = 3;
+    int resultado = func2();
+    list< list<int> > resultado;
+
+    int func2 (int x, int y){
+        return x+y;
+    }
+
+    int func3 (int x=7, int y=3){
+        printf("El_resultado_es");
+        printf(x+y);
+    }
+
+    
+    //Apartado de sentencias
+    scanf(numero);
+
+    while(TRUE){
+        printf("Hola");
+    }
+
+    if(i > 5){
+        printf("Mayor");
+    } else {
+        printf("Menor");
+    }
+
+    repeat{
+        i = i+1;
+    }until(i==10);
+
+    numeros>>;
+    numeros<<;
+    numeros = numeros@1 ++7;
+    numeros = numeros +1;
+    numeros = numeros -2;
+    numeros = #numeros;
+    numeros = ?numeros;
+
+    x = x+y;
+    y = x*y;
+    resultado = x/y;
+} 

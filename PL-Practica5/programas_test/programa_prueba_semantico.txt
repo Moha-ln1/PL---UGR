@@ -1,0 +1,89 @@
+program programa_guion {
+    ini_var_local
+    int ve; //Tiene que dar error sintactico tambien (0.15)
+    int ve1, ve2;
+    float vf;
+    char vc;
+    bool vl;
+    fin_var_local
+
+    int funcionA (int a1, int a2)
+    {
+        ini_var_local
+        int x1, x2;
+        bool x3;
+        fin_var_local
+
+        int funcionB(int i)
+        {
+            ini_var_local
+            int y1;
+            fin_var_local
+            
+            if (TRUE) {
+                ve1 = x1;
+            } else if(FALSE){
+                ve2 = x2;
+            }
+
+            return y1;
+        }
+
+        //INPUT x1;
+        //OUTPUT x1;
+        x1 = a1;
+        vf = 1.0f;
+        x3 = TRUE;
+
+        while (x3){
+            x2 = a2;
+            x3 = FALSE;
+        }
+
+        x1 = funcionB(x1);
+        return x1 ;
+    }
+
+    {
+        ini_var_local
+        int y2 , y3;
+        float y4;
+        fin_var_local
+
+        int funcionC(int ent)
+        {
+            ini_var_local
+            int y1;
+            fin_var_local
+
+            y1 = y1;
+            return y1;
+        }
+
+        //(0.5)
+        y2 = funcionC(1);//Llamada a funcion con numero y tipo de los argumentos erroneos
+
+        //Error de tipo en expresiones lógicas y aritméticas. (0.2)
+        {
+            ini_var_local
+            bool b2 , b3;
+            int i1;
+            fin_var_local
+
+            int funcionD(int ent)
+            {
+                ini_var_local
+                float f4;
+                fin_var_local
+
+                b2 = FALSE;
+                b3 = !b2;
+                b3 = (b3 != b2); //Aqui da fallo y no deberia
+            }
+
+            i1 = funcionD(i1);
+
+        }
+    }
+
+}

@@ -1,0 +1,256 @@
+(INCLUDE, <stdlib.h>)
+(INCLUDE, <stdio.h>)
+(INCLUDE, "semantico.h")
+
+(BEGIN_BLOCK)
+(DECLARE, int, n, curr, ultim, cuenta, primero)
+
+{
+	(PRINTF, "Introduce un número: ")
+}
+{
+	(SCANF, "%d", n)
+}
+{
+	(PRINTF, " %d == ", n)
+}
+{
+	curr = 2;
+}
+{
+	ultim = 0;
+}
+{
+	cuenta = 0;
+}
+{
+	primero = 1;
+}
+{
+	etiqueta2:
+	{
+		{
+			bool temp1;
+			temp1 = curr <= n;
+			
+			if (!temp1) goto etiqueta1;
+		}
+
+		(BEGIN_BLOCK)
+			(DECLARE, int, d)
+			
+			{
+				int temp2;
+				temp2 = n / curr;
+				d = temp2;
+			}
+			{
+				int temp3;
+				temp3 = d * curr;
+				bool temp4;
+				temp4 = (temp3) == n;
+				
+				if (!temp4) goto etiqueta3;
+				{
+					(BEGIN_BLOCK)
+						
+						{
+							bool temp5;
+							temp5 = curr != ultim;
+							
+							if (!temp5) goto etiqueta5;
+							{
+								(BEGIN_BLOCK)
+									
+									{
+										ultim = curr;
+									}
+									{
+										cuenta = 1;
+									}
+								(END_BLOCK)
+
+							}
+							goto etiqueta6;
+
+							etiqueta5:							
+							{
+								(BEGIN_BLOCK)
+									
+									{
+										int temp6;
+										temp6 = cuenta + 1;
+										cuenta = temp6;
+									}
+								(END_BLOCK)
+
+							}
+							
+							etiqueta6: {} 
+						}
+						{
+							int temp7;
+							temp7 = n / curr;
+							n = temp7;
+						}
+					(END_BLOCK)
+
+				}
+				goto etiqueta4;
+
+				etiqueta3:				
+				{
+					(BEGIN_BLOCK)
+						
+						{
+							bool temp8;
+							temp8 = cuenta > 0;
+							
+							if (!temp8) goto etiqueta7;
+							{
+								(BEGIN_BLOCK)
+									
+									{
+										bool temp9;
+										temp9 = primero == 0;
+										
+										if (!temp9) goto etiqueta9;
+										{
+											(BEGIN_BLOCK)
+												
+												{
+													(PRINTF, " * ")
+												}
+											(END_BLOCK)
+
+										}
+										goto etiqueta10;
+
+										etiqueta9: {}
+										
+										etiqueta10: {} 
+									}
+									{
+										primero = 0;
+									}
+									{
+										(PRINTF, " %d ", curr)
+									}
+									{
+										bool temp10;
+										temp10 = cuenta > 1;
+										
+										if (!temp10) goto etiqueta11;
+										{
+											(BEGIN_BLOCK)
+												
+												{
+													(PRINTF, "^ %d ", cuenta)
+												}
+											(END_BLOCK)
+
+										}
+										goto etiqueta12;
+
+										etiqueta11: {}
+										
+										etiqueta12: {} 
+									}
+								(END_BLOCK)
+
+							}
+							goto etiqueta8;
+
+							etiqueta7: {}
+							
+							etiqueta8: {} 
+						}
+						{
+							int temp11;
+							temp11 = curr + 1;
+							curr = temp11;
+						}
+						{
+							cuenta = 0;
+						}
+					(END_BLOCK)
+
+				}
+				
+				etiqueta4: {} 
+			}
+		(END_BLOCK)
+
+		goto etiqueta2;
+
+	}
+	etiqueta1: {}
+}
+{
+	bool temp12;
+	temp12 = cuenta > 0;
+	
+	if (!temp12) goto etiqueta13;
+	{
+		(BEGIN_BLOCK)
+			
+			{
+				bool temp13;
+				temp13 = primero == 0;
+				
+				if (!temp13) goto etiqueta15;
+				{
+					(BEGIN_BLOCK)
+						
+						{
+							(PRINTF, " * ")
+						}
+					(END_BLOCK)
+
+				}
+				goto etiqueta16;
+
+				etiqueta15: {}
+				
+				etiqueta16: {} 
+			}
+			{
+				primero = 0;
+			}
+			{
+				(PRINTF, " %d ", curr)
+			}
+			{
+				bool temp14;
+				temp14 = cuenta > 1;
+				
+				if (!temp14) goto etiqueta17;
+				{
+					(BEGIN_BLOCK)
+						
+						{
+							(PRINTF, "^ %d ", cuenta)
+						}
+					(END_BLOCK)
+
+				}
+				goto etiqueta18;
+
+				etiqueta17: {}
+				
+				etiqueta18: {} 
+			}
+		(END_BLOCK)
+
+	}
+	goto etiqueta14;
+
+	etiqueta13: {}
+	
+	etiqueta14: {} 
+}
+{
+	(PRINTF, " \ n ")
+}
+(END_BLOCK)
+

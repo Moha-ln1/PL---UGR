@@ -1,0 +1,25 @@
+program program1 {
+    ini_var_local
+    int a; 
+    int b,c,d;
+    int m, j;
+    int h;
+    fin_var_local
+
+    int func1(int c, int d){
+        return c+d;
+    }
+
+    int f(int d){
+        return d;
+    }
+
+    a=1;
+    b=1;
+
+    b = b+1;
+    h = func1(a,b);
+
+    a = b + c - f(d);
+    m = j*4 -a;
+}

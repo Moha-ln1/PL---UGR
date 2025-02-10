@@ -1,0 +1,36 @@
+program myProgram {
+    // Declaración de variables
+    int contador = 0;
+    float resultado = 3.1415;
+    bool bandera = TRUE;
+
+    // Lista de enteros
+    list<int> numeros = [1, 2, 3, 4, 5];
+
+    // Lista de flotantes
+    list<float> decimales = [0.1f, 0.2f, 0.3f];
+
+    // Escaneo de entrada
+    scanf(contador);
+    
+    // Condicional para verificar un valor
+    if (contador > 5) {
+        printf("Contador es mayor que 5");
+    } else {
+        printf("Contador es menor o igual a 5");
+    }
+
+    // Bucle mientras
+    while (contador < 10) {
+        resultado = resultado + contador;
+        contador = contador++;
+    }
+
+    // Repetir hasta que la bandera sea FALSE
+    repeat {
+        contador = contador--;
+    } until (bandera == FALSE);
+
+    // Retornar el valor de resultado
+    return resultado;
+}

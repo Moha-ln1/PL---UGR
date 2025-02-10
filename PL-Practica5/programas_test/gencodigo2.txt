@@ -1,0 +1,67 @@
+program programa_guion {
+    ini_var_local
+    int n , curr, ultim, cuenta, primero;
+    fin_var_local
+
+    printf ("Introduce un número: ") ;
+    scanf("%d", n);
+    printf ( " %d == " , n ) ;
+
+    curr = 2 ;
+    ultim = 0;
+    cuenta = 0;
+    primero = 1 ;
+
+    while ( curr <= n )
+    {   
+        ini_var_local
+        int d;
+        fin_var_local
+
+        d = n / curr ;
+
+        if ( (d * curr) == n ) /* curr divide a n */
+        {
+            if ( curr != ultim )
+            {
+                ultim = curr ;
+                cuenta = 1 ;
+            }
+            else{
+                cuenta = cuenta + 1 ;
+            }
+            n = n / curr ;
+        }
+        else /* curr no divide a 'n ' */
+        {
+            if ( cuenta > 0 )
+            {
+                if ( primero == 0 ) 
+                {
+                    printf ( " * " ) ;
+                }
+                primero = 0 ;
+                printf ( " %d " , curr ) ;
+                if ( cuenta > 1 ) {
+                    printf ( "^ %d " , cuenta ) ;
+                }
+            }
+
+            curr = curr +1 ;
+            cuenta = 0 ;
+        }
+    }
+    if ( cuenta > 0 )
+    {
+        if ( primero == 0 ) {
+            printf ( " * " ) ;
+        }
+        primero = 0 ;
+        printf ( " %d " , curr ) ;
+        if ( cuenta > 1 ) {
+            printf ( "^ %d " , cuenta ) ;
+        }
+    }
+
+    printf ( "\n" ) ;
+}

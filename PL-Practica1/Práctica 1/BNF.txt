@@ -1,0 +1,99 @@
+< Programa > 			::= 	< Cabecera_programa > < bloque >
+< bloque > 			::= 	< Inicio de bloque >
+					< Declar_de_variables_locales >
+					< Declar_de_subprogs >
+					< Sentencias >
+					< Fin_de_bloque >
+
+< Declar_de_subprogs > 		::= 	< Declar_de_subprogs > < Declar_subprog > 			
+				 |	
+< Declar_subprog > 		::= 	< Cabecera_subprograma > < bloque >
+< Declar_de_variables_locales > ::= 	< Variables_locales >
+  				 |
+< Cabecera_programa > 		::=     “program” <identificador>
+< Inicio_de_bloque > 		::= 	“{“
+< Fin_de_bloque > 		::= 	“}”
+
+< Variables_locales > 		::= 	< Variables_locales > < Cuerpo_declar_variables >
+				 |	< Cuerpo_declar_variables >
+
+< Cuerpo_declar_variables >     ::= 	<tipo_dato> <identificador> ";" 
+< Cabecera_subprog >		::=  	<tipo_dato> <identificador> "(" <Parametros> ")" ";"
+<Parametros> 			::=	<Parametros> "," <Parametro> 
+				 |      <Parametro> 
+				 |  
+<Parametro> 			::=     <tipo_dato> <identificador>
+< Sentencias > 			::= 	< Sentencias > < Sentencia >
+				 | 	< Sentencia >
+< Sentencia > 			::= 	< bloque >
+				 |	< sentencia_asignacion >
+				 |	< sentencia_if >
+				 |	< sentencia_while >
+				 |	< sentencia_entrada >
+				 |	< sentencia_salida >
+				 |	< sentencia_return > 
+				 | 	< sentencia_repeat_until >
+
+<llamada_subprog> 		::= 	<identificador> "(" <lista_expresiones_o_cadena> ")" 
+
+< sentencia_asignacion >	::= 	<identificador> “=” <expresion> ”;”
+
+< sentencia_if > 		::= 	"if" "(" <expresion> ")" <bloque> < sentencia_else >
+
+< sentencia_else >		::= 	"else" <bloque> 
+				 |
+
+< sentencia_while >		::= 	"while" "(" <expresion> ")" <bloque>
+
+< sentencia_entrada >		::= 	“scanf” “(“ <formato> “,” < lista_variables > “)” “;”
+
+< sentencia_salida > 		::= 	“printf" “(” <formato> “,” < lista_expresiones_o_cadena > “)” “;”
+
+< sentencia_return > 		::= 	“return” < expresion > “;”
+
+< sentencia_repeat_until >	::= 	“repeat” < bloque > “until” “(“ < expresion > “)” “;”
+
+<lista_variables> 		::= 	<identificador> 
+				 |  	<lista_variables> "," <identificador>
+
+<lista_expresiones_o_cadena> 	::= 	<expresion> 
+				 | 	<lista_expresiones_o_cadena> "," <expresion> 
+
+< expresion > 			::= 	“(” < expresion > “)”
+				 |	< op_unario > < expresion >
+				 |	< expresion > < op_binario > <expresion>
+				 |	< identificador >
+				 |	< constante >
+				 |	< llamada_subprog>
+
+<tipo_dato> 			::= 	"int" 
+				 |	"float" 
+				 |	"char" 
+				 |	"bool"
+				 | 	"list" “<”<tipo_dato>”>”
+ 
+<identificador> 		::= 	[a-zA-Z_][a-zA-Z0-9_]* 
+<constante> 			::= 	<numero> 
+				 | 	<cadena> 
+<numero> 			::= 	[0-9]+ 
+<cadena> 			::= 	“ ” ” ([a-zA-Z0-9_])+ ” ” ” 
+<op_unario> 			::= 	"-" 
+				 |   	"!"
+ 
+<formato>			::= 	“%d”
+				 | 	”%f”
+				 | 	“%s”
+				 |	”%c” 
+
+<op_binario> 			::= 	"+" 
+				 | 	"-" 
+				 |	"*" 
+				 | 	"/" 
+				 | 	"&&" 
+				 | 	"||" 
+				 |	"==" 
+				 | 	"!=" 
+				 | 	"<" 
+				 | 	">" 
+				 | 	"<=" 
+				 | 	">="

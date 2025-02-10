@@ -1,0 +1,15 @@
+
+/*
+COMPILACIÓN:
+
+flex -l programa.lex
+
+gcc -lfl -o lexyy lex.yy.c
+
+EJECUCIÓN:
+
+./lexyy
+
+Es necesario que exista en la carpeta raiz un fichero txt con los tokens a leer
+
+*/
